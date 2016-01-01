@@ -39,6 +39,7 @@ public class MenuState extends State{
     public void render(SpriteBatch sb){
 
     }
+
     @Override
     public void shapeRender(ShapeRenderer sr){
         sr.setProjectionMatrix(cam.combined);

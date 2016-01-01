@@ -8,11 +8,11 @@ import java.util.HashMap;
 /**
  * Created by 343076 on 30/12/2015.
  */
-public class Resources {
+public class Images {
 
     private HashMap<String, TextureAtlas> atlases;
 
-    public Resources(){
+    public Images(){
         atlases = new HashMap<String, TextureAtlas>();
     }
 

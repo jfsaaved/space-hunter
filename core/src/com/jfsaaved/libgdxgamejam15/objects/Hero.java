@@ -4,25 +4,35 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector3;
 
 /**
  * Created by 343076 on 30/12/2015.
  */
-public class Hero extends MoveableObject{
+public class Hero extends AnimatedObject {
 
-    public Hero(float x, float y, float width, float height, TextureRegion image) {
+    private float boundaryX1;
+    private float boundaryX2;
+
+    public Hero(float x, float y, int width, int height, TextureRegion image) {
         super(x, y, width, height, image);
     }
 
-    @Override
-    public void draw(SpriteBatch sb){
-
+    // The two x boundaries for the player's x position
+    public void setBoundaries(float boundaryX1, float boundaryX2){
+        this.boundaryX1 = boundaryX1;
+        this.boundaryX2 = boundaryX2;
     }
 
-    @Override
-    public void update(float dt) {
+    public void handleInput(float dt){
+        if(this.box.getX() > boundaryX1) {
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
+                moveLeft();
+        }
 
+        if(this.box.getX() < (boundaryX2 - this.box.getWidth())) {
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+                moveRight();
+        }
     }
 
 }

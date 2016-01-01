@@ -5,18 +5,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.jfsaaved.libgdxgamejam15.handler.Resources;
+import com.jfsaaved.libgdxgamejam15.handler.Images;
 import com.jfsaaved.libgdxgamejam15.states.GSM;
 import com.jfsaaved.libgdxgamejam15.states.MenuState;
 
 public class Main extends ApplicationAdapter {
 
     public static final String TITLE = "Space Hunter";
-    public static final int WIDTH = 700;
-    public static final int HEIGHT = 700;
+    public static final int WIDTH = 600;
+    public static final int HEIGHT = 600;
 
     // Sprites
-    public static Resources resources;
+    public static Images resources;
 
     private SpriteBatch sb;
     private ShapeRenderer sr;
@@ -27,7 +27,7 @@ public class Main extends ApplicationAdapter {
 		sb = new SpriteBatch();
         sr = new ShapeRenderer();
 
-        resources = new Resources();
+        resources = new Images();
         resources.loadAtlas("pack1.pack","assets");
 
         gsm = new GSM();
