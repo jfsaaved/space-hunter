@@ -1,5 +1,6 @@
 package com.jfsaaved.libgdxgamejam15.objects;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -12,8 +13,7 @@ public abstract class AnimatedObject {
 
     protected boolean hide;
     protected Rectangle box;
-    protected TextureRegion image;
-    protected TextureRegion[][] standImage;
+    protected Sprite[] standingSprite;
 
     protected int colFrame;
     protected float colFrameDelay;
@@ -25,12 +25,13 @@ public abstract class AnimatedObject {
         colFrameDelay = 10f;
 
         // Store each frame into a double TextureRegion array
-        standImage = new TextureRegion[1][4];
-        for(int col = 0; col < 4; col++)
-            standImage[0][col] = new TextureRegion(image, width * col, 0, width, height);
+        standingSprite = new Sprite[4];
+        for(int col = 0; col < 4; col++) {
+            TextureRegion newSprite = new TextureRegion(image, width * col, 0, width, height);
+            standingSprite[col] = new Sprite(newSprite);
+        }
 
         this.box = new Rectangle(x, y, width, height);
-        this.image = image;
         this.hide = false;
     }
 
@@ -46,7 +47,7 @@ public abstract class AnimatedObject {
 
     public void draw(SpriteBatch sb){
         if(!hide)
-            sb.draw(standImage[0][colFrame], box.getX(), box.getY());
+            sb.draw(standingSprite[colFrame], box.getX(), box.getY());
     }
 
     public void drawBox(ShapeRenderer sr){

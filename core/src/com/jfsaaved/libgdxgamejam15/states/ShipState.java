@@ -17,23 +17,20 @@ public class ShipState extends State{
     // Space background
     private TextureRegion background;
 
-    private Ship ship;
+    // Objects
     private Hero hero;
-    private NPC android;
 
     public ShipState(GSM gsm) {
         super(gsm);
 
-        this.hero = new Hero(Main.WIDTH/2 - 18, Main.HEIGHT/2, 36, 54, Main.resources.getAtlas("assets").findRegion("player"));
-        this.android = new NPC(Main.WIDTH/2 - 100, Main.HEIGHT/2, 32, 32, Main.resources.getAtlas("assets").findRegion("blob1"));
-        this.ship = new Ship(Main.WIDTH/2 - 150, Main.HEIGHT/2, 300, 150);
+        this.hero = new Hero(Main.WIDTH/2, Main.HEIGHT/2, 36, 54, Main.resources.getAtlas("assets").findRegion("player"));
         this.background = new TextureRegion(Main.resources.getAtlas("assets").findRegion("space"));
 
-        cam.setToOrtho(false, 400, 400);
-        cam.position.set(Main.WIDTH/2, this.hero.getY() + 50, 0);
-        cam.update();
+        // Camera initializations
+        camX = this.hero.getX();
+        camY = this.hero.getY() + 50;
+        this.updateCam(Main.WIDTH/2, Main.HEIGHT/2, camX, camY);
 
-        this.hero.setBoundaries(this.ship.getX(), this.ship.getX() + 300);
     }
 
     @Override
@@ -42,7 +39,6 @@ public class ShipState extends State{
             mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             cam.unproject(mouse);
         }
-
         hero.handleInput(dt);
     }
 
@@ -50,7 +46,6 @@ public class ShipState extends State{
     protected void update(float dt) {
         handleInput(dt);
         hero.update(dt);
-        android.update(dt);
     }
 
     @Override
@@ -59,7 +54,6 @@ public class ShipState extends State{
         sb.begin();
         sb.draw(background,0,100);
         hero.draw(sb);
-        android.draw(sb);
         sb.end();
     }
 
@@ -68,9 +62,14 @@ public class ShipState extends State{
         sr.setProjectionMatrix(cam.combined);
         sr.begin(ShapeRenderer.ShapeType.Line);
         hero.drawBox(sr);
-        android.drawBox(sr);
-        ship.drawBox(sr);
         sr.end();
+    }
+
+    @Override
+    protected void resize(int width, int height) {
+        Main.WIDTH = width;
+        Main.HEIGHT = height;
+        this.updateCam(Main.WIDTH/2, Main.HEIGHT/2, camX, camY);
     }
 
 }

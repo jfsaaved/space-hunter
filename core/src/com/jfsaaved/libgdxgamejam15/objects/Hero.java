@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.jfsaaved.libgdxgamejam15.Main;
 
 /**
  * Created by 343076 on 30/12/2015.
@@ -15,6 +16,8 @@ public class Hero extends AnimatedObject {
 
     public Hero(float x, float y, int width, int height, TextureRegion image) {
         super(x, y, width, height, image);
+        this.boundaryX1 = 0;
+        this.boundaryX2 = Main.WIDTH;
     }
 
     // The two x boundaries for the player's x position

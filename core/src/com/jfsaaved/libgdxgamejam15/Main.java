@@ -12,8 +12,8 @@ import com.jfsaaved.libgdxgamejam15.states.MenuState;
 public class Main extends ApplicationAdapter {
 
     public static final String TITLE = "Space Hunter";
-    public static final int WIDTH = 600;
-    public static final int HEIGHT = 600;
+    public static int WIDTH = 1280;
+    public static int HEIGHT = 768;
 
     // Sprites
     public static Images resources;
@@ -32,7 +32,6 @@ public class Main extends ApplicationAdapter {
 
         gsm = new GSM();
         gsm.push(new MenuState(gsm));
-
 	}
 
 	@Override
@@ -46,4 +45,9 @@ public class Main extends ApplicationAdapter {
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         gsm.shapeRender(sr);
 	}
+
+    @Override
+    public void resize(int width, int height){
+        gsm.resize(width, height);
+    }
 }
