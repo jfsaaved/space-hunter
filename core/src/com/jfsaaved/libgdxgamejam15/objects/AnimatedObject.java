@@ -19,16 +19,14 @@ public abstract class AnimatedObject {
     protected float colFrameDelay;
 
     protected AnimatedObject(float x, float y, int width, int height, TextureRegion image){
-
         // Keeps track of which frame in the Sprite Sheet it's currently at
         colFrame = 0;
         colFrameDelay = 10f;
 
-        // Store each frame into a double TextureRegion array
+        // Store each frame into a Sprite array
         standingSprite = new Sprite[4];
         for(int col = 0; col < 4; col++) {
-            TextureRegion newSprite = new TextureRegion(image, width * col, 0, width, height);
-            standingSprite[col] = new Sprite(newSprite);
+            standingSprite[col] = new Sprite(image, width * col, 0, width, height);
         }
 
         this.box = new Rectangle(x, y, width, height);
@@ -56,7 +54,7 @@ public abstract class AnimatedObject {
     }
 
     public void moveRight(){
-        this.box.setX(this.box.getX() + 1);
+        box.setX(this.box.getX() + 1);
     }
 
     public void moveLeft(){

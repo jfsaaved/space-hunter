@@ -12,6 +12,7 @@ import com.jfsaaved.libgdxgamejam15.states.MenuState;
 public class Main extends ApplicationAdapter {
 
     public static final String TITLE = "Space Hunter";
+
     public static int WIDTH = 1280;
     public static int HEIGHT = 768;
 

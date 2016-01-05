@@ -1,19 +1,21 @@
 package com.jfsaaved.libgdxgamejam15.states;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
-import com.jfsaaved.libgdxgamejam15.Main;
+import com.jfsaaved.libgdxgamejam15.ui.TextBox;
 
 /**
  * Created by 343076 on 30/12/2015.
  */
 public class MenuState extends State{
 
+    private TextBox start;
+
     public MenuState(GSM gsm){
         super(gsm);
+
+        start = new TextBox("START", 0, 0, 3);
     }
 
     @Override
@@ -32,14 +34,17 @@ public class MenuState extends State{
 
     @Override
     protected void render(SpriteBatch sb){
-
+        sb.setProjectionMatrix(cam.combined);
+        sb.begin();
+        start.render(sb);
+        sb.end();
     }
 
     @Override
     protected void shapeRender(ShapeRenderer sr){
         sr.setProjectionMatrix(cam.combined);
         sr.begin(ShapeRenderer.ShapeType.Line);
-
+        start.drawBox(sr);
         sr.end();
     }
 
