@@ -25,8 +25,8 @@ public abstract class State {
     protected State(GSM gsm){
         cam = new OrthographicCamera();
         mouse = new Vector3();
-        camX = 0;
-        camY = 0;
+        camX = 300;
+        camY = 300;
 
         this.gsm = gsm;
         this.updateCam(Main.WIDTH, Main.HEIGHT, camX, camY);

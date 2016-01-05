@@ -13,7 +13,7 @@ public abstract class AnimatedObject {
 
     protected boolean hide;
     protected Rectangle box;
-    protected Sprite[] standingSprite;
+    protected TextureRegion[] standingSprite;
 
     protected int colFrame;
     protected float colFrameDelay;
@@ -61,6 +61,14 @@ public abstract class AnimatedObject {
         this.box.setX(this.box.getX() - 1);
     }
 
+    public float getX(){
+        return this.box.getX();
+    }
+
+    public float getY(){
+        return this.box.getY();
+    }
+
     public boolean contains(Rectangle box2){
         return this.box.contains(box2);
     }
@@ -69,12 +77,6 @@ public abstract class AnimatedObject {
         return this.box.overlaps(box2);
     }
 
-    public float getX(){
-        return this.box.getX();
-    }
 
-    public float getY(){
-        return this.box.getY();
-    }
 
 }
