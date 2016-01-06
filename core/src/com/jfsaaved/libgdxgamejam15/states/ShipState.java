@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.jfsaaved.libgdxgamejam15.Main;
 import com.jfsaaved.libgdxgamejam15.objects.Hero;
-import com.jfsaaved.libgdxgamejam15.objects.NPC;
-import com.jfsaaved.libgdxgamejam15.objects.Ship;
-import com.jfsaaved.libgdxgamejam15.ui.TextBox;
+import com.jfsaaved.libgdxgamejam15.ui.BorderImage;
+import com.jfsaaved.libgdxgamejam15.ui.PointerImage;
+import com.jfsaaved.libgdxgamejam15.ui.TextImage;
 
 /**
  * Created by 343076 on 30/12/2015.
@@ -19,12 +19,19 @@ public class ShipState extends State{
     // Logs
     private FPSLogger fps;
 
-    // Text test
-    private TextBox navigate;
-    private TextBox supplies;
-    private TextBox maintenance;
-    private TextBox astromech;
-    private TextBox options;
+    // Text
+    private TextImage navigate;
+    private TextImage supplies;
+    private TextImage maintenance;
+    private TextImage astromech;
+    private TextImage options;
+
+    // Borders
+    private BorderImage dialogueBorder;
+    private BorderImage menuBorder;
+
+    // Other assets
+    private PointerImage pointer;
 
     // Space background
     private TextureRegion background;
@@ -38,21 +45,28 @@ public class ShipState extends State{
         this.hero = new Hero(Main.WIDTH/2, Main.HEIGHT/2, 36, 54, Main.resources.getAtlas("assets").findRegion("player"));
         this.background = new TextureRegion(Main.resources.getAtlas("assets").findRegion("space"));
 
-
         // Camera initializations
         camX = this.hero.getX();
         camY = this.hero.getY() + 50;
         this.updateCam(Main.WIDTH/2, Main.HEIGHT/2, camX, camY);
 
+        // We use 0.111f for scale since we want to turn 45 to 5, 45/9 = 5
+        // Thus each tile of border image is 5px
+        // Each unit of width and height corresponds to 1 tile of the border image, 1 unit = 5px
+        dialogueBorder = new BorderImage((cam.position.x - cam.viewportWidth/2) + 5, cam.position.y - cam.viewportHeight/2 + 10, (int) (cam.viewportWidth/5) - 2, 20, 0.111f);
+        menuBorder = new BorderImage(cam.position.x + (cam.viewportWidth/4), (cam.position.y + cam.viewportHeight/2) - 105, 31, 20, 0.111f);
+
         // Options
-        navigate = new TextBox("NAVIGATE", camX + 50, camY + 50, 1);
-        supplies = new TextBox("SUPPLIES", camX + 50, navigate.getY() - navigate.getHeight() , 1);
-        maintenance = new TextBox("MAINTENANCE", camX + 50, supplies.getY() - supplies.getHeight(), 1);
-        astromech = new TextBox("ASTROMECH", camX + 50, maintenance.getY() - maintenance.getHeight(), 1);
-        options = new TextBox("OPTIONS", camX + 50, astromech.getY() - astromech.getHeight(), 1);
+        options = new TextImage("       OPTIONS", menuBorder.getBorderX() + 7, menuBorder.getBorderY() + 10, 1);
+        astromech = new TextImage("     ASTROMECH", options.getTextX(), options.getTextY() + options.getTextHeight(), 1);
+        maintenance = new TextImage("   MAINTENANCE", options.getTextX(), astromech.getTextY() + astromech.getTextHeight(), 1);
+        supplies = new TextImage("      SUPPLIES", options.getTextX(), maintenance.getTextY() + maintenance.getTextHeight() , 1);
+        navigate = new TextImage("      NAVIGATE", options.getTextX(), supplies.getTextY() + supplies.getTextHeight(), 1);
+
+        // Others
+        pointer = new PointerImage(navigate.getTextX(), navigate.getTextY(), (int) navigate.getTextHeight(), 4);
 
         fps = new FPSLogger();
-
     }
 
     @Override
@@ -62,6 +76,7 @@ public class ShipState extends State{
             cam.unproject(mouse);
         }
         hero.handleInput(dt);
+        pointer.handleInput();
     }
 
     @Override
@@ -80,11 +95,17 @@ public class ShipState extends State{
         sb.draw(background, background.getRegionWidth(), 100);
         hero.draw(sb);
 
-        navigate.draw(sb);
-        supplies.draw(sb);
-        maintenance.draw(sb);
-        astromech.draw(sb);
-        options.draw(sb);
+        dialogueBorder.drawBorder(sb);
+        menuBorder.drawBorder(sb);
+
+        navigate.drawText(sb);
+        supplies.drawText(sb);
+        maintenance.drawText(sb);
+        astromech.drawText(sb);
+        options.drawText(sb);
+
+        pointer.drawPointer(sb);
+
         sb.end();
     }
 
@@ -94,11 +115,14 @@ public class ShipState extends State{
         sr.begin(ShapeRenderer.ShapeType.Line);
         hero.drawBox(sr);
 
-        navigate.drawBox(sr);
-        supplies.drawBox(sr);
-        maintenance.drawBox(sr);
-        astromech.drawBox(sr);
-        options.drawBox(sr);
+        navigate.drawTextBox(sr);
+        supplies.drawTextBox(sr);
+        maintenance.drawTextBox(sr);
+        astromech.drawTextBox(sr);
+        options.drawTextBox(sr);
+        dialogueBorder.drawBorderBox(sr);
+
+        pointer.drawPointerBox(sr);
         sr.end();
     }
 
