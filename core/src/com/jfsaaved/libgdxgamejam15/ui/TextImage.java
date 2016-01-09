@@ -25,9 +25,11 @@ public class TextImage {
     protected int textSpacing;
     protected Color textColor;
     protected String text;
+    protected String key;
 
-    public TextImage(String text, float x, float y, int textScale) {
+    public TextImage(String text, float x, float y, int textScale, String key) {
         // Presentation variables
+        this.key = key;
         this.text = text;
         this.textScale = textScale;
         this.textSpacing = -1;
@@ -104,6 +106,14 @@ public class TextImage {
 
     public void drawTextBox(ShapeRenderer sr){
         sr.rect(textBox.getX(), textBox.getY(), textBox.getWidth(), textBox.getHeight());
+    }
+
+    public String getKey(){
+        return key;
+    }
+
+    public void setKey(String key){
+        this.key = key;
     }
 
     public void setTextPosition(float x, float y) {

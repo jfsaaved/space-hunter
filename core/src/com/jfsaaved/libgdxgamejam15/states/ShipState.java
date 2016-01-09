@@ -25,6 +25,7 @@ public class ShipState extends State{
     private TextImage maintenance;
     private TextImage astromech;
     private TextImage options;
+    private TextImage dialogue;
 
     // Borders
     private BorderImage dialogueBorder;
@@ -57,11 +58,18 @@ public class ShipState extends State{
         menuBorder = new BorderImage(cam.position.x + (cam.viewportWidth/4), (cam.position.y + cam.viewportHeight/2) - 105, 31, 20, 0.111f);
 
         // Options
-        options = new TextImage("       OPTIONS", menuBorder.getBorderX() + 7, menuBorder.getBorderY() + 10, 1);
-        astromech = new TextImage("     ASTROMECH", options.getTextX(), options.getTextY() + options.getTextHeight(), 1);
-        maintenance = new TextImage("   MAINTENANCE", options.getTextX(), astromech.getTextY() + astromech.getTextHeight(), 1);
-        supplies = new TextImage("      SUPPLIES", options.getTextX(), maintenance.getTextY() + maintenance.getTextHeight() , 1);
-        navigate = new TextImage("      NAVIGATE", options.getTextX(), supplies.getTextY() + supplies.getTextHeight(), 1);
+        options = new TextImage("       OPTIONS", menuBorder.getBorderX() + 7, menuBorder.getBorderY() + 10, 1, "options");
+        astromech = new TextImage("     ASTROMECH", options.getTextX(), options.getTextY() + options.getTextHeight(), 1, "astromech");
+        maintenance = new TextImage("   MAINTENANCE", options.getTextX(), astromech.getTextY() + astromech.getTextHeight(), 1, "maintenance");
+        supplies = new TextImage("      SUPPLIES", options.getTextX(), maintenance.getTextY() + maintenance.getTextHeight() , 1, "supplies");
+        navigate = new TextImage("      NAVIGATE", options.getTextX(), supplies.getTextY() + supplies.getTextHeight(), 1, "navigate");
+
+        // Dialogue
+        // Full width is Hello World! This is a testing. Check out my mixtape at ayyyy.
+        dialogue = new TextImage("Hello World! This is a testing. Check out my mixtape at ayyyy!",
+                dialogueBorder.getBorderX() + dialogueBorder.getBorderTileWidth(),
+                dialogueBorder.getBorderY() + dialogueBorder.getBorderHeight() - (options.getTextHeight() + dialogueBorder.getBorderTileHeight()),
+                1, "dialogue");
 
         // Others
         pointer = new PointerImage(navigate.getTextX(), navigate.getTextY(), (int) navigate.getTextHeight(), 4);
@@ -103,6 +111,7 @@ public class ShipState extends State{
         maintenance.drawText(sb);
         astromech.drawText(sb);
         options.drawText(sb);
+        dialogue.drawText(sb);
 
         pointer.drawPointer(sb);
 
@@ -121,6 +130,7 @@ public class ShipState extends State{
         astromech.drawTextBox(sr);
         options.drawTextBox(sr);
         dialogueBorder.drawBorderBox(sr);
+        dialogue.drawTextBox(sr);
 
         pointer.drawPointerBox(sr);
         sr.end();

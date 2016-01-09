@@ -74,6 +74,22 @@ public class BorderImage {
         this.borderScale = borderScale;
     }
 
+    public float getBorderTileWidth(){
+        return borderTileWidth * borderScale;
+    }
+
+    public float getBorderTileHeight(){
+        return borderTileHeight * borderScale;
+    }
+
+    public float getBorderWidth() {
+        return borderBox.getWidth();
+    }
+
+    public float getBorderHeight() {
+        return borderBox.getHeight();
+    }
+
     public float getBorderX(){
         return borderBox.getX();
     }
