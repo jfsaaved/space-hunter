@@ -19,14 +19,17 @@ public class PointerImage {
     private int options;
     private int currentOption;
     private int moveBy;
+    private int scale;
 
-    public PointerImage(float x, float y, int moveBy, int options){
-        pointer = new Sprite(new Texture(Gdx.files.internal("pointer.png")));
-        pointerBox = new Rectangle(x, y, pointer.getRegionWidth(), pointer.getHeight());
-
+    public PointerImage(float x, float y, int moveBy, int scale, int options){
+        this.scale = scale;
         this.moveBy = moveBy;
         this.options = options;
         this.currentOption = 0;
+
+        pointer = new Sprite(new Texture(Gdx.files.internal("pointer.png")));
+        pointer.setSize(pointer.getWidth() * scale, pointer.getHeight() * scale);
+        pointerBox = new Rectangle(x, y, pointer.getWidth(), pointer.getHeight());
     }
 
     public void handleInput(){
@@ -45,12 +48,29 @@ public class PointerImage {
         }
     }
 
+    public int getOption(){
+        return currentOption;
+    }
+
     public void drawPointer(SpriteBatch sb){
-        sb.draw(pointer, pointerBox.getX(), pointerBox.getY());
+        pointer.setPosition(pointerBox.getX(), pointerBox.getY());
+        pointer.draw(sb);
     }
 
     public void drawPointerBox(ShapeRenderer sr){
         sr.rect(pointerBox.getX(), pointerBox.getY(), pointerBox.getWidth(), pointerBox.getHeight());
+    }
+
+    public void setX(float x){
+        pointerBox.setX(x);
+    }
+
+    public float getX(){
+        return pointerBox.getX();
+    }
+
+    public float getWidth(){
+        return pointerBox.getWidth();
     }
 
 }

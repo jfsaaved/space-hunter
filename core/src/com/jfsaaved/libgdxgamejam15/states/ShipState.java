@@ -1,6 +1,7 @@
 package com.jfsaaved.libgdxgamejam15.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -72,19 +73,23 @@ public class ShipState extends State{
                 1, "dialogue");
 
         // Others
-        pointer = new PointerImage(navigate.getTextX(), navigate.getTextY(), (int) navigate.getTextHeight(), 4);
+        pointer = new PointerImage(navigate.getTextX(), navigate.getTextY(), (int) navigate.getTextHeight(), 1, 4);
 
         fps = new FPSLogger();
     }
 
     @Override
     protected void handleInput(float dt) {
+        hero.handleInput(dt);
+        pointer.handleInput();
         if(Gdx.input.justTouched()){
             mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             cam.unproject(mouse);
         }
-        hero.handleInput(dt);
-        pointer.handleInput();
+        if(Gdx.input.isKeyJustPressed(Input.Keys.Z)){
+            if(pointer.getOption() == 0)
+                this.gsm.set(new PlanetState(gsm));
+        }
     }
 
     @Override
