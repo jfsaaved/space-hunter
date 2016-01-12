@@ -60,6 +60,8 @@ public class MenuState extends State{
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
         sb.draw(background, 0, 0);
+        sb.draw(background, background.getRegionWidth(), 0);
+        sb.draw(background, 0 - background.getRegionWidth(), 0);
         title.drawText(sb);
         start.drawText(sb);
         load.drawText(sb);

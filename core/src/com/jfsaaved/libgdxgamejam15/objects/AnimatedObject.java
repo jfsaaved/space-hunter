@@ -11,12 +11,19 @@ import com.badlogic.gdx.math.Rectangle;
  */
 public abstract class AnimatedObject {
 
+    protected enum CurrentState {
+        Standing, Walking, Jumping;
+    }
+
     protected boolean hide;
     protected Rectangle box;
-    protected TextureRegion[] standingSprite;
+    protected Sprite[] standingSprite;
+    protected Sprite[] walkingSprite;
 
+    protected CurrentState currentState;
     protected int colFrame;
     protected float colFrameDelay;
+    protected boolean flip;
 
     protected AnimatedObject(float x, float y, int width, int height, TextureRegion image){
         // Keeps track of which frame in the Sprite Sheet it's currently at
@@ -29,11 +36,25 @@ public abstract class AnimatedObject {
             standingSprite[col] = new Sprite(image, width * col, 0, width, height);
         }
 
+        walkingSprite = new Sprite[10];
+        for(int col = 0; col < 10; col++) {
+            walkingSprite[col] = new Sprite(image, width * (col + 5), 0, width, height);
+        }
+
+        this.currentState = CurrentState.Standing;
         this.box = new Rectangle(x, y, width, height);
         this.hide = false;
+        this.flip = false;
     }
 
     public void update(float dt){
+        if(currentState == currentState.Standing)
+            updateStandingAnim(dt);
+        else if(currentState == currentState.Walking)
+            updateWalkingAnim(dt);
+    }
+
+    protected void updateStandingAnim(float dt){
         colFrameDelay -= 70f * dt;
         if(colFrameDelay < 0) {
             colFrame++;
@@ -43,9 +64,27 @@ public abstract class AnimatedObject {
             colFrame = 0;
     }
 
+    protected void updateWalkingAnim(float dt){
+        colFrameDelay -= 70f * dt;
+        if(colFrameDelay < 0) {
+            colFrame++;
+            colFrameDelay = 10f;
+        }
+        if(colFrame > 9)
+            colFrame = 0;
+    }
+
     public void draw(SpriteBatch sb){
-        if(!hide)
-            sb.draw(standingSprite[colFrame], box.getX(), box.getY());
+        if(!hide) {
+            if(currentState == CurrentState.Standing) {
+                standingSprite[colFrame].setFlip(flip, false);
+                sb.draw(standingSprite[colFrame], box.getX(), box.getY());
+            }
+            else if(currentState == CurrentState.Walking) {
+                walkingSprite[colFrame].setFlip(flip, false);
+                sb.draw(walkingSprite[colFrame], box.getX(), box.getY());
+            }
+        }
     }
 
     public void drawBox(ShapeRenderer sr){

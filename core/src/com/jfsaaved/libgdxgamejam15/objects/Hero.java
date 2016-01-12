@@ -27,14 +27,21 @@ public class Hero extends AnimatedObject {
     }
 
     public void handleInput(float dt){
+        currentState = currentState.Standing;
         if(this.box.getX() > boundaryX1) {
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 moveLeft();
+                flip = true;
+                currentState = currentState.Walking;
+            }
         }
 
         if(this.box.getX() < (boundaryX2 - this.box.getWidth())) {
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                 moveRight();
+                flip = false;
+                currentState = currentState.Walking;
+            }
         }
     }
 

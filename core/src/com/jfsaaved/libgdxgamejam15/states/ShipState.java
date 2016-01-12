@@ -67,7 +67,7 @@ public class ShipState extends State{
 
         // Dialogue
         // Full width is Hello World! This is a testing. Check out my mixtape at ayyyy.
-        dialogue = new TextImage("Hello World! This is a testing. Check out my mixtape at ayyyy!",
+        dialogue = new TextImage("Hello World! This is a ShipState.",
                 dialogueBorder.getBorderX() + dialogueBorder.getBorderTileWidth(),
                 dialogueBorder.getBorderY() + dialogueBorder.getBorderHeight() - (options.getTextHeight() + dialogueBorder.getBorderTileHeight()),
                 1, "dialogue");
@@ -134,7 +134,9 @@ public class ShipState extends State{
         maintenance.drawTextBox(sr);
         astromech.drawTextBox(sr);
         options.drawTextBox(sr);
+
         dialogueBorder.drawBorderBox(sr);
+        menuBorder.drawBorderBox(sr);
         dialogue.drawTextBox(sr);
 
         pointer.drawPointerBox(sr);
