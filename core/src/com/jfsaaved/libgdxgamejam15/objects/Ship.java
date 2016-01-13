@@ -11,9 +11,18 @@ public class Ship {
     protected boolean hide;
     protected Rectangle box;
 
+    // Stats
+    private int fuel;
+    private int health;
+    private int maintenance;
+
     public Ship(int x, int y, int width, int height) {
         this.box = new Rectangle(x, y, width, height);
         this.hide = false;
+
+        fuel = 20;
+        health = 15;
+        maintenance = 10;
     }
 
     public float getX(){

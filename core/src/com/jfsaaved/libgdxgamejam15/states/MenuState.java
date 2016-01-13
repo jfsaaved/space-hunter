@@ -26,11 +26,11 @@ public class MenuState extends State{
         super(gsm);
 
         this.background = new TextureRegion(Main.resources.getAtlas("assets").findRegion("space"));
-        title = new TextImage("SPACE HUNTER", 300, 400, 5, "title");
+        title = new TextImage("SPACE HUNTER", 300, 400, 5);
         title.shiftHalfLeft();
-        start = new TextImage("START GAME", 300, 300, 3, "start");
+        start = new TextImage("START GAME", 300, 300, 3);
         start.shiftHalfLeft();
-        load = new TextImage("LOAD GAME", 300, 250, 3, "load");
+        load = new TextImage("LOAD GAME", 300, 250, 3);
         load.shiftHalfLeft();
 
         pointer = new PointerImage(start.getTextX(), start.getTextY(), (int) start.getTextHeight(), 3, 1);

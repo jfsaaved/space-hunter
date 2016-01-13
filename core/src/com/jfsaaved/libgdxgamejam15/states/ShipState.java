@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.jfsaaved.libgdxgamejam15.Main;
 import com.jfsaaved.libgdxgamejam15.objects.Hero;
 import com.jfsaaved.libgdxgamejam15.ui.BorderImage;
+import com.jfsaaved.libgdxgamejam15.ui.MenuImages;
 import com.jfsaaved.libgdxgamejam15.ui.PointerImage;
 import com.jfsaaved.libgdxgamejam15.ui.TextImage;
 
@@ -20,20 +21,13 @@ public class ShipState extends State{
     // Logs
     private FPSLogger fps;
 
-    // Text
-    private TextImage navigate;
-    private TextImage supplies;
-    private TextImage maintenance;
-    private TextImage astromech;
-    private TextImage options;
+    // U.I.
+    private MenuImages menuImages;
     private TextImage dialogue;
 
     // Borders
     private BorderImage dialogueBorder;
     private BorderImage menuBorder;
-
-    // Other assets
-    private PointerImage pointer;
 
     // Space background
     private TextureRegion background;
@@ -59,21 +53,16 @@ public class ShipState extends State{
         menuBorder = new BorderImage(cam.position.x + (cam.viewportWidth/4), (cam.position.y + cam.viewportHeight/2) - 105, 31, 20, 0.111f);
 
         // Options
-        options = new TextImage("       OPTIONS", menuBorder.getBorderX() + 7, menuBorder.getBorderY() + 10, 1, "options");
-        astromech = new TextImage("     ASTROMECH", options.getTextX(), options.getTextY() + options.getTextHeight(), 1, "astromech");
-        maintenance = new TextImage("   MAINTENANCE", options.getTextX(), astromech.getTextY() + astromech.getTextHeight(), 1, "maintenance");
-        supplies = new TextImage("      SUPPLIES", options.getTextX(), maintenance.getTextY() + maintenance.getTextHeight() , 1, "supplies");
-        navigate = new TextImage("      NAVIGATE", options.getTextX(), supplies.getTextY() + supplies.getTextHeight(), 1, "navigate");
+        // Optimal size "       OPTIONS"
+        String[] options = {"       OPTIONS","     ASTROMECH","   MAINTENANCE","      SUPPLIES","      NAVIGATE"};
+        menuImages = new MenuImages(menuBorder.getBorderX() + 7, menuBorder.getBorderY() + 10, 1, options);
 
         // Dialogue
         // Full width is Hello World! This is a testing. Check out my mixtape at ayyyy.
         dialogue = new TextImage("Hello World! This is a ShipState.",
                 dialogueBorder.getBorderX() + dialogueBorder.getBorderTileWidth(),
-                dialogueBorder.getBorderY() + dialogueBorder.getBorderHeight() - (options.getTextHeight() + dialogueBorder.getBorderTileHeight()),
-                1, "dialogue");
-
-        // Others
-        pointer = new PointerImage(navigate.getTextX(), navigate.getTextY(), (int) navigate.getTextHeight(), 1, 4);
+                dialogueBorder.getBorderY() + dialogueBorder.getBorderHeight() - (menuImages.getTextHeight() + dialogueBorder.getBorderTileHeight()),
+                1);
 
         fps = new FPSLogger();
     }
@@ -81,13 +70,13 @@ public class ShipState extends State{
     @Override
     protected void handleInput(float dt) {
         hero.handleInput(dt);
-        pointer.handleInput();
+        menuImages.handleInput();
         if(Gdx.input.justTouched()){
             mouse.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             cam.unproject(mouse);
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.Z)){
-            if(pointer.getOption() == 0)
+            if(menuImages.getOption() == 0)
                 this.gsm.set(new PlanetState(gsm));
         }
     }
@@ -111,14 +100,8 @@ public class ShipState extends State{
         dialogueBorder.drawBorder(sb);
         menuBorder.drawBorder(sb);
 
-        navigate.drawText(sb);
-        supplies.drawText(sb);
-        maintenance.drawText(sb);
-        astromech.drawText(sb);
-        options.drawText(sb);
+        menuImages.drawMenu(sb);
         dialogue.drawText(sb);
-
-        pointer.drawPointer(sb);
 
         sb.end();
     }
@@ -129,17 +112,12 @@ public class ShipState extends State{
         sr.begin(ShapeRenderer.ShapeType.Line);
         hero.drawBox(sr);
 
-        navigate.drawTextBox(sr);
-        supplies.drawTextBox(sr);
-        maintenance.drawTextBox(sr);
-        astromech.drawTextBox(sr);
-        options.drawTextBox(sr);
+        menuImages.drawMenuBox(sr);
 
         dialogueBorder.drawBorderBox(sr);
         menuBorder.drawBorderBox(sr);
         dialogue.drawTextBox(sr);
 
-        pointer.drawPointerBox(sr);
         sr.end();
     }
 

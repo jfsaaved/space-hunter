@@ -27,7 +27,7 @@ public class TextImage {
     protected String text;
     protected String key;
 
-    public TextImage(String text, float x, float y, int textScale, String key) {
+    public TextImage(String text, float x, float y, int textScale) {
         // Presentation variables
         this.key = key;
         this.text = text;

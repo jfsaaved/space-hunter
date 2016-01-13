@@ -14,10 +14,28 @@ public class Hero extends AnimatedObject {
     private float boundaryX1;
     private float boundaryX2;
 
+    // Stats
+    private int hunger;
+    private int energy;
+    private int health;
+
+    // Skills
+    private int hunter;
+    private int explorer;
+    private int mechanic;
+
     public Hero(float x, float y, int width, int height, TextureRegion image) {
         super(x, y, width, height, image);
         this.boundaryX1 = 0;
         this.boundaryX2 = Main.WIDTH;
+
+        hunger = 5;
+        energy = 5;
+        health = 5;
+
+        hunter = 1;
+        explorer = 1;
+        mechanic = 1;
     }
 
     // The two x boundaries for the player's x position
