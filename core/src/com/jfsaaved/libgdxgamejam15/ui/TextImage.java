@@ -25,11 +25,19 @@ public class TextImage {
     protected int textSpacing;
     protected Color textColor;
     protected String text;
-    protected String key;
 
-    public TextImage(String text, float x, float y, int textScale) {
+    protected float textDelay;
+    protected float textDelayCurrent;
+    protected int textLength;
+    protected boolean textComplete;
+
+    public TextImage(String text, float x, float y, int textScale, float textDelay) {
+        // Text delays
+        this.textDelay = textDelay;
+        this.textDelayCurrent = textDelay;
+        this.textLength = 0;
+        this.textComplete = false;
         // Presentation variables
-        this.key = key;
         this.text = text;
         this.textScale = textScale;
         this.textSpacing = -1;
@@ -54,45 +62,64 @@ public class TextImage {
         }
     }
 
+    private int parse(int i){
+        char c = text.charAt(i);
+        int index = 26;
+
+        if ((int) c > 64 && (int) c < 91) // Upper case
+            index = c - 36;
+        else if ((int) c > 96 && (int) c < 123) // Lower case
+            index = c - 97;
+        else if ((int) c > 47 && (int) c < 58) // Numbers
+            index = c + 10;
+        else if((int) c == 33) // Exclamation point
+            index = 74;
+        else if((int) c == 35) // Hash
+            index = 79;
+        else if((int) c == 36) // Dollar sign
+            index = 80;
+        else if((int) c == 37) // Percentage sign
+            index = 82;
+        else if((int) c == 38) // And sign
+            index = 84;
+        else if((int) c == 43) // Plus sign
+            index = 86;
+        else if((int) c == 44) // Comma
+            index = 70;
+        else if((int) c == 45) // Minus sign
+            index = 85;
+        else if((int) c == 46) // Period
+            index = 68;
+        else if((int) c == 58) // Colon
+            index = 69;
+        else if((int) c == 63) // Question mark
+            index = 75;
+        else
+            index = 26;
+
+        return index;
+    }
+
+    public void update(float dt){
+        if(!textComplete){
+            if(textLength < text.length()){
+                if(textDelayCurrent > 0)
+                    textDelayCurrent -= 100f * dt;
+                else{
+                    textLength++;
+                    textDelayCurrent = textDelay;
+                }
+            }else{
+                textComplete = true;
+                textLength = text.length();
+            }
+        }
+    }
+
     public void drawText(SpriteBatch sb){
-        for(int i = 0; i < text.length(); i ++){
-            char c = text.charAt(i);
-            int index = 26;
-
-            // Parser
-            if ((int) c > 64 && (int) c < 91) // Upper case
-                index = c - 36;
-            else if ((int) c > 96 && (int) c < 123) // Lower case
-                index = c - 97;
-            else if ((int) c > 47 && (int) c < 58) // Numbers
-                index = c + 10;
-            else if((int) c == 33) // Exclamation point
-                index = 74;
-            else if((int) c == 35) // Hash
-                index = 79;
-            else if((int) c == 36) // Dollar sign
-                index = 80;
-            else if((int) c == 37) // Percentage sign
-                index = 82;
-            else if((int) c == 38) // And sign
-                index = 84;
-            else if((int) c == 43) // Plus sign
-                index = 86;
-            else if((int) c == 44) // Comma
-                index = 70;
-            else if((int) c == 45) // Minus sign
-                index = 85;
-            else if((int) c == 46) // Period
-                index = 68;
-            else if((int) c == 58) // Colon
-                index = 69;
-            else if((int) c == 63) // Question mark
-                index = 75;
-            else
-                index = 26;
-
-            int row = index / textSheet[0].length;
-            int col = index % textSheet[0].length;
+        for(int i = 0; i < textLength; i ++){
+            int row = parse(i) / textSheet[0].length;
+            int col = parse(i) % textSheet[0].length;
 
             textSheet[row][col].setPosition(textBox.getX() + (i * (textLetterWidth + textSpacing) * textScale), textBox.getY());
             textSheet[row][col].setColor(textColor);
@@ -100,20 +127,16 @@ public class TextImage {
         }
     }
 
-    public void shiftHalfLeft() {
-        textBox.setX(textBox.getX() - textBox.getWidth()/2);
-    }
-
     public void drawTextBox(ShapeRenderer sr){
         sr.rect(textBox.getX(), textBox.getY(), textBox.getWidth(), textBox.getHeight());
     }
 
-    public String getKey(){
-        return key;
+    public boolean isComplete(){
+        return textComplete;
     }
 
-    public void setKey(String key){
-        this.key = key;
+    public void shiftHalfLeft() {
+        textBox.setX(textBox.getX() - textBox.getWidth()/2);
     }
 
     public void setTextPosition(float x, float y) {

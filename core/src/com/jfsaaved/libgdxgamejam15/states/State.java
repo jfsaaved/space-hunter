@@ -49,4 +49,12 @@ public abstract class State {
     protected abstract void render(SpriteBatch sb);
     protected abstract void shapeRender(ShapeRenderer sr);
 
+    public void changeTo(State state){
+        this.gsm.set(state);
+    }
+    public OrthographicCamera getCam(){ return this.cam; }
+    public GSM getGSM(){
+        return this.gsm;
+    }
+
 }
