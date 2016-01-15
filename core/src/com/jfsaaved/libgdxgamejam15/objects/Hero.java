@@ -24,18 +24,27 @@ public class Hero extends AnimatedObject {
     private int explorer;
     private int mechanic;
 
+    // Supplies
+    private int food;
+    private int artifacts;
+    private int gold;
+
     public Hero(float x, float y, int width, int height, TextureRegion image) {
         super(x, y, width, height, image);
         this.boundaryX1 = 0;
         this.boundaryX2 = Main.WIDTH;
 
-        hunger = 5;
-        energy = 5;
-        health = 5;
+        hunger = 100;
+        energy = 100;
+        health = 100;
 
         hunter = 1;
         explorer = 1;
         mechanic = 1;
+
+        food = 5;
+        artifacts = 0;
+        gold = 5;
     }
 
     // The two x boundaries for the player's x position
@@ -61,6 +70,79 @@ public class Hero extends AnimatedObject {
                 currentState = currentState.Walking;
             }
         }
+    }
+
+
+    public int getMechanic() {
+        return mechanic;
+    }
+
+    public void setMechanic(int mechanic) {
+        this.mechanic = mechanic;
+    }
+
+    public int getHunger() {
+        return hunger;
+    }
+
+    public void setHunger(int hunger) {
+        this.hunger = hunger;
+    }
+
+    public int getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public int getHunter() {
+        return hunter;
+    }
+
+    public void setHunter(int hunter) {
+        this.hunter = hunter;
+    }
+
+    public int getExplorer() {
+        return explorer;
+    }
+
+    public void setExplorer(int explorer) {
+        this.explorer = explorer;
+    }
+
+    public int getFood() {
+        return food;
+    }
+
+    public void setFood(int food) {
+        this.food = food;
+    }
+
+    public int getArtifacts() {
+        return artifacts;
+    }
+
+    public void setArtifacts(int artifacts) {
+        this.artifacts = artifacts;
+    }
+
+    public int getGold() {
+        return gold;
+    }
+
+    public void setGold(int gold) {
+        this.gold = gold;
     }
 
 }

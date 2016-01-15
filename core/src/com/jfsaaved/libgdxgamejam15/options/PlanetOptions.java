@@ -1,45 +1,22 @@
 package com.jfsaaved.libgdxgamejam15.options;
 
-import com.badlogic.gdx.graphics.Color;
 import com.jfsaaved.libgdxgamejam15.states.PlanetState;
-import com.jfsaaved.libgdxgamejam15.states.ShipState;
 import com.jfsaaved.libgdxgamejam15.ui.MenuImages;
 
 /**
- * Created by 343076 on 13/01/2016.
+ * Created by 343076 on 14/01/2016.
  */
-public class ShipOptions extends Options {
+public class PlanetOptions extends Options {
 
-    private ShipState state;
+    private PlanetState state;
 
-    public ShipOptions(ShipState state){
+    public PlanetOptions(PlanetState state){
         super();
         this.state = state;
     }
 
     @Override
-    public void handleInput(){
-        if(currentOption.elementAt(0) == 0)
-            navigateOptions();
-        else if(currentOption.elementAt(0) == 1)
-            suppliesOptions();
-        else if(currentOption.elementAt(0) == 2)
-            maintenanceOptions();
-
-        if(currentOption.empty()){
-            state.statusImages.resetColorAll();
-
-            String[] dialogue = {"Navigate through out the galaxy to different systems."};
-            state.dialogueImages.setDialogues(dialogue);
-
-            String[] options = {"NAVIGATE","HERO","SHIP","LAND","OPTIONS"};
-            state.menuImages = new MenuImages(state.getCam(), options);
-        }
-    }
-
-    @Override
-    // Explains options through the dialogue box
-    public void setHoverDesc(int i){
+    public void setHoverDesc(int i) {
         if(currentOption.empty()){
             if(i == 0) {
                 String[] dialogue = {"Navigate through out the galaxy to different systems."};
@@ -84,27 +61,27 @@ public class ShipOptions extends Options {
                 state.dialogueImages.setDialogues(dialogue);
             }
         }
-        // health = 1, hunger = 2, energy = 3, hunter = 4, explorer = 5, mechanic = 6, shealth = 8, sfuel = 9, slevel = 10;
-        else if(currentOption.get(0) == 1) { // Hero options
-            if(i == 0) {
-                state.statusImages.resetColorAll();
-                state.statusImages.changeColourAt(Color.GREEN,2);
-            }
-            else if(i == 1) {
-                state.statusImages.resetColorAll();
-                state.statusImages.changeColourAt(Color.GREEN,1);
-            }
-            else if(i == 2) {
-                state.statusImages.resetColorAll();
-                state.statusImages.changeColourAt(Color.GREEN,3);
-            }
-            else {
-                state.statusImages.resetColorAll();
-            }
+    }
+
+    @Override
+    public void handleInput() {
+        if(currentOption.elementAt(0) == 0)
+            exploreOptions();
+        else if(currentOption.elementAt(0) == 1)
+            huntOptions();
+        else if(currentOption.elementAt(0) == 2)
+            campOptions();
+
+        if(currentOption.empty()){
+            String[] dialogue = {"This is planet A."};
+            state.dialogueImages.setDialogues(dialogue);
+
+            String[] options = {"EXPLORE","HUNT","CAMP","SHIP","OPTIONS"};
+            state.menuImages = new MenuImages(state.getCam(), options);
         }
     }
 
-    private void navigateOptions(){
+    private void exploreOptions(){
         String[] options = {"SYSTEM 1","SYSTEM 2","SYSTEM 3","SYSTEM 4","BACK"};
         state.menuImages = new MenuImages(state.getCam(), options);
         if(currentOption.size() > 1){
@@ -126,7 +103,7 @@ public class ShipOptions extends Options {
         }
     }
 
-    private void suppliesOptions(){
+    private void huntOptions(){
         String[] options = {"EAT","SLEEP","RELAX","BACK"};
         state.menuImages = new MenuImages(state.getCam(), options);
         if(currentOption.size() > 1){
@@ -148,7 +125,7 @@ public class ShipOptions extends Options {
         }
     }
 
-    private void maintenanceOptions(){
+    private void campOptions(){
         String[] options = {"CLEAN","REPAIR","BACK"};
         state.menuImages = new MenuImages(state.getCam(), options);
         if(currentOption.size() > 1){
@@ -165,5 +142,4 @@ public class ShipOptions extends Options {
             }
         }
     }
-
 }

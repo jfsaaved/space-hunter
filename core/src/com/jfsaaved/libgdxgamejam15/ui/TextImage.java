@@ -139,6 +139,11 @@ public class TextImage {
         textBox.setX(textBox.getX() - textBox.getWidth()/2);
     }
 
+    // Does not update the box
+    public void updateText(String text){
+        this.text = text;
+    }
+
     public void setTextPosition(float x, float y) {
         textBox.setPosition(x, y);
     }

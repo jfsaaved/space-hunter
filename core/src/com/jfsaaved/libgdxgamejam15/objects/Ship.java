@@ -12,17 +12,21 @@ public class Ship {
     protected Rectangle box;
 
     // Stats
-    private int fuel;
     private int health;
-    private int maintenance;
+    private int fuel;
+    private int level;
 
     public Ship(int x, int y, int width, int height) {
         this.box = new Rectangle(x, y, width, height);
         this.hide = false;
 
-        fuel = 20;
-        health = 15;
-        maintenance = 10;
+        health = 100;
+        fuel = 100;
+        level = 1;
+    }
+
+    public float getWidth(){
+        return this.box.getWidth();
     }
 
     public float getX(){
@@ -37,5 +41,31 @@ public class Ship {
         if(!hide)
             sr.rect(box.getX(), box.getY(), box.getWidth(), box.getHeight());
     }
+
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public int getFuel() {
+        return fuel;
+    }
+
+    public void setFuel(int fuel) {
+        this.fuel = fuel;
+    }
+
 
 }

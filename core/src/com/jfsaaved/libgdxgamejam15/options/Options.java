@@ -22,6 +22,8 @@ public abstract class Options {
         currentOption.push(i);
     }
 
+    public abstract void setHoverDesc(int i);
+
     public abstract void handleInput();
 
 }

@@ -30,7 +30,7 @@ public class DialogueImages {
         for(String item : text) {
             TextImage dialogue = new TextImage(item,
                     dialogueBorder.getBorderX() + dialogueBorder.getBorderTileWidth(),
-                    dialogueBorder.getBorderY() + dialogueBorder.getBorderHeight() - (16f + dialogueBorder.getBorderTileHeight()) - newLineY, 1, 1f);
+                    dialogueBorder.getBorderY() + dialogueBorder.getBorderHeight() - (16f + dialogueBorder.getBorderTileHeight()) - newLineY, 1, 0.10f);
             newLineY += dialogue.getTextHeight();
             dialogues.add(dialogue);
         }
@@ -45,7 +45,7 @@ public class DialogueImages {
         for(String item : text) {
             TextImage dialogue = new TextImage(item,
                     dialogueBorder.getBorderX() + dialogueBorder.getBorderTileWidth(),
-                    dialogueBorder.getBorderY() + dialogueBorder.getBorderHeight() - (16f + dialogueBorder.getBorderTileHeight()) - newLineY, 1, 1f);
+                    dialogueBorder.getBorderY() + dialogueBorder.getBorderHeight() - (16f + dialogueBorder.getBorderTileHeight()) - newLineY, 1, 0.10f);
             newLineY += dialogue.getTextHeight();
             dialogues.add(dialogue);
         }
