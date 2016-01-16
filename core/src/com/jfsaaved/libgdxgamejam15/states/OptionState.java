@@ -86,12 +86,15 @@ public class OptionState extends State {
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.Z)){
             if(pointer.getOption() == 0) {
+                Main.sound.getAtlas("fail").play();
                 preferences.save(hero, ship, this);
                 String[] dialogue = {"SAVED!"};
                 dialogueImages = new DialogueImages(this.cam, dialogue);
             }
-            else if(pointer.getOption() == 3)
+            else if(pointer.getOption() == 3) {
+                Main.sound.getAtlas("fail").play();
                 this.gsm.pop();
+            }
         }
     }
 

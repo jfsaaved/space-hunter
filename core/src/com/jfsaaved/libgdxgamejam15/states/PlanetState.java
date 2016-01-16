@@ -37,6 +37,10 @@ public class PlanetState extends State {
     public PlanetState(GSM gsm){
         super(gsm);
 
+        music.loadAtlas("HOSTILE.mp3","hostile");
+        music.getAtlas("hostile").setLooping(true);
+        music.getAtlas("hostile").play();
+
         hero.setPosition(Main.WIDTH/2, Main.HEIGHT/2 + 3);
 
         // Images
@@ -99,6 +103,7 @@ public class PlanetState extends State {
             planetOptions.setHoverDesc(menuImages.getOption());
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.Z)){
+            Main.sound.getAtlas("fail").play();
             planetOptions.pushOption(menuImages.getOption());
             planetOptions.handleInput();
             planetOptions.setHoverDesc(menuImages.getOption());
@@ -141,14 +146,16 @@ public class PlanetState extends State {
     }
 
     public void checkGameOver(float dt){
+        boolean gameOver = false;
         if(hero.getHunger() <= 0)
-            getGSM().set(new GameOverState(getGSM()));
+            gameOver = true;
         if(hero.getHealth() <= 0)
-            getGSM().set(new GameOverState(getGSM()));
+            gameOver = true;
         if(ship.getFuel() <= 0)
-            getGSM().set(new GameOverState(getGSM()));
+            gameOver = true;
         if(ship.getHealth() <= 0)
-            getGSM().set(new GameOverState(getGSM()));
+            gameOver = true;
+
         if(hero.getEnergy() <= 0) {
             hero.setEnergy(50);
             hero.setHunger(hero.getHunger() - 20);
@@ -159,6 +166,12 @@ public class PlanetState extends State {
             statusImages.setStatsHunger(hero.getHunger());
 
             useTurn(4);
+        }
+
+        if(gameOver){
+            music.getAtlas("hostile").stop();
+            music.getAtlas("hostile").dispose();
+            getGSM().set(new GameOverState(getGSM()));
         }
     }
 

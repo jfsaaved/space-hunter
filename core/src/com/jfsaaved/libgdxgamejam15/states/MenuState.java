@@ -20,6 +20,7 @@ import com.jfsaaved.libgdxgamejam15.ui.TextImage;
 public class MenuState extends State{
 
     private TextureRegion background;
+    private float backgroundX;
     private TextImage title;
     private TextImage start;
     private TextImage load;
@@ -28,6 +29,10 @@ public class MenuState extends State{
 
     public MenuState(GSM gsm){
         super(gsm);
+
+        music.loadAtlas("MENU.mp3","menu");
+        music.getAtlas("menu").setLooping(true);
+        music.getAtlas("menu").play();
 
         days = 0;
         turns = 4;
@@ -61,6 +66,9 @@ public class MenuState extends State{
             cam.unproject(mouse);
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.Z)){
+            Main.sound.getAtlas("fail").play();
+            music.getAtlas("menu").stop();
+            music.getAtlas("menu").dispose();
             if(pointer.getOption() == 0)
                 this.gsm.set(new ShipState(gsm));
             else if(pointer.getOption() == 1){
@@ -73,18 +81,27 @@ public class MenuState extends State{
     @Override
     protected void update(float dt){
         handleInput(dt);
+        checkBackground(dt);
         title.update(dt);
         start.update(dt);
         load.update(dt);
+    }
+
+    public void checkBackground(float dt){
+        if(backgroundX < background.getRegionWidth())
+            backgroundX += 10f * dt;
+        else
+            backgroundX = 0;
     }
 
     @Override
     protected void render(SpriteBatch sb){
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
-        sb.draw(background, 0, 0);
-        sb.draw(background, background.getRegionWidth(), 0);
-        sb.draw(background, 0 - background.getRegionWidth(), 0);
+        sb.draw(background, backgroundX, -100);
+        sb.draw(background, backgroundX + background.getRegionWidth(), -100);
+        sb.draw(background, backgroundX - background.getRegionWidth(), -100);
+        sb.draw(background, backgroundX - background.getRegionWidth() * 2, -100);
         title.drawText(sb);
         start.drawText(sb);
         load.drawText(sb);

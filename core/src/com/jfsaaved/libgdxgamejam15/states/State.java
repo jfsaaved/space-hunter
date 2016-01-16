@@ -10,6 +10,8 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jfsaaved.libgdxgamejam15.Main;
 import com.jfsaaved.libgdxgamejam15.handler.MainPreferences;
+import com.jfsaaved.libgdxgamejam15.handler.Musics;
+import com.jfsaaved.libgdxgamejam15.handler.Sounds;
 import com.jfsaaved.libgdxgamejam15.objects.Hero;
 import com.jfsaaved.libgdxgamejam15.objects.Ship;
 import com.jfsaaved.libgdxgamejam15.options.ShipOptions;
@@ -51,12 +53,15 @@ public abstract class State {
 
     // Preferences
     public static MainPreferences preferences;
+    public Musics music;
 
     protected State(GSM gsm){
         cam = new OrthographicCamera();
         mouse = new Vector3();
         camX = 300;
         camY = 300;
+
+        music = new Musics();
 
         this.gsm = gsm;
         this.updateCam(Main.WIDTH, Main.HEIGHT, camX, camY);

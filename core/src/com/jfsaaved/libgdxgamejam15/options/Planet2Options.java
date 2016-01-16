@@ -32,8 +32,11 @@ public class Planet2Options extends Options {
             serviceOptions();
         else if(currentOption.elementAt(0) == 2)
             sellOptions();
-        else if(currentOption.elementAt(0) == 3)
+        else if(currentOption.elementAt(0) == 3) {
+            state.music.getAtlas("civilian").stop();
+            state.music.getAtlas("civilian").dispose();
             state.getGSM().set(new ShipState(state.getGSM()));
+        }
         else if(currentOption.elementAt(0) == 4){
             currentOption.clear();
             state.getGSM().push(new OptionState(state.getGSM()));

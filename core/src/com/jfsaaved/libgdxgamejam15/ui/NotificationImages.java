@@ -3,6 +3,7 @@ package com.jfsaaved.libgdxgamejam15.ui;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.jfsaaved.libgdxgamejam15.Main;
 
 import java.util.ArrayList;
 

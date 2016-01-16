@@ -41,6 +41,9 @@ public class ShipState extends State{
     public ShipState(GSM gsm) {
         super(gsm);
 
+        music.loadAtlas("SHIP.mp3","ship");
+        music.getAtlas("ship").setLooping(true);
+        music.getAtlas("ship").play();
         hero.setPosition(Main.WIDTH/2, Main.HEIGHT/2 + 3);
 
         // Objects stuff
@@ -106,6 +109,7 @@ public class ShipState extends State{
             shipOptions.setHoverDesc(menuImages.getOption());
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.Z)) {
+            Main.sound.getAtlas("fail").play();
             shipOptions.pushOption(menuImages.getOption());
             shipOptions.handleInput();
             shipOptions.setHoverDesc(menuImages.getOption());
@@ -140,14 +144,16 @@ public class ShipState extends State{
     }
 
     public void checkGameOver(float dt){
+        boolean gameOver = false;
         if(hero.getHunger() <= 0)
-            getGSM().set(new GameOverState(getGSM()));
+            gameOver = true;
         if(hero.getHealth() <= 0)
-            getGSM().set(new GameOverState(getGSM()));
+            gameOver = true;
         if(ship.getFuel() <= 0)
-            getGSM().set(new GameOverState(getGSM()));
+            gameOver = true;
         if(ship.getHealth() <= 0)
-            getGSM().set(new GameOverState(getGSM()));
+            gameOver = true;
+
         if(hero.getEnergy() <= 0) {
             hero.setEnergy(50);
             hero.setHunger(hero.getHunger() - 20);
@@ -158,6 +164,12 @@ public class ShipState extends State{
             statusImages.setStatsHunger(hero.getHunger());
 
             shipOptions.calculateTravelingTurns(4);
+        }
+
+        if(gameOver){
+            music.getAtlas("ship").stop();
+            music.getAtlas("ship").dispose();
+            getGSM().set(new GameOverState(getGSM()));
         }
     }
 

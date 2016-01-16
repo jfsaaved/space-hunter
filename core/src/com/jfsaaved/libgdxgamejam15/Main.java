@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.jfsaaved.libgdxgamejam15.handler.Images;
+import com.jfsaaved.libgdxgamejam15.handler.Sounds;
 import com.jfsaaved.libgdxgamejam15.states.GSM;
 import com.jfsaaved.libgdxgamejam15.states.MenuState;
 
@@ -23,6 +24,8 @@ public class Main extends ApplicationAdapter {
     private ShapeRenderer sr;
 	private GSM gsm;
 
+    public static Sounds sound;
+
 	@Override
 	public void create () {
 		sb = new SpriteBatch();
@@ -30,6 +33,10 @@ public class Main extends ApplicationAdapter {
 
         resources = new Images();
         resources.loadAtlas("pack1.pack","assets");
+
+        sound = new Sounds();
+        sound.loadAtlas("FAIL.mp3","fail");
+        sound.loadAtlas("CURSOR.mp3","cursor");
 
         gsm = new GSM();
         gsm.push(new MenuState(gsm));

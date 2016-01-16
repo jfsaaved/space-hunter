@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.jfsaaved.libgdxgamejam15.Main;
 
 /**
  * Created by 343076 on 06/01/2016.
@@ -35,6 +36,7 @@ public class PointerImage {
     public void handleInput(){
         if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
             if(currentOption >= 0 && currentOption < options) {
+                Main.sound.getAtlas("cursor").play();
                 currentOption += 1;
                 pointerBox.setY(pointerBox.getY() - moveBy);
             }
@@ -42,6 +44,7 @@ public class PointerImage {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             if(currentOption <= options && currentOption > 0) {
+                Main.sound.getAtlas("cursor").play();
                 currentOption -= 1;
                 pointerBox.setY(pointerBox.getY() + moveBy);
             }

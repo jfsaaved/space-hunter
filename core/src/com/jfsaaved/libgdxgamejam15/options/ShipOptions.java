@@ -39,6 +39,8 @@ public class ShipOptions extends Options {
                 state.notificationImages = new NotificationImages(state.getCam(),notification);
                 currentOption.clear();
             }else {
+                state.music.getAtlas("ship").stop();
+                state.music.getAtlas("ship").dispose();
                 if (shipState.getCurrentSystem() == 0)
                     state.getGSM().set(new PlanetState(state.getGSM()));
                 else

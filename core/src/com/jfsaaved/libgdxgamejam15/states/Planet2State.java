@@ -31,6 +31,10 @@ public class Planet2State extends State {
     public Planet2State(GSM gsm){
         super(gsm);
 
+        music.loadAtlas("CIVILIAN.mp3","civilian");
+        music.getAtlas("civilian").setLooping(true);
+        music.getAtlas("civilian").play();
+
         hero.setPosition(Main.WIDTH/2, Main.HEIGHT/2 + 3);
 
         // Images
@@ -93,6 +97,7 @@ public class Planet2State extends State {
             planetOptions.setHoverDesc(menuImages.getOption());
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.Z)){
+            Main.sound.getAtlas("fail").play();
             planetOptions.pushOption(menuImages.getOption());
             planetOptions.handleInput();
             planetOptions.setHoverDesc(menuImages.getOption());

@@ -37,8 +37,11 @@ public class PlanetOptions extends Options {
             huntOptions();
         else if(currentOption.elementAt(0) == 2)
             campOptions();
-        else if(currentOption.elementAt(0) == 3)
+        else if(currentOption.elementAt(0) == 3) {
+            state.music.getAtlas("hostile").stop();
+            state.music.getAtlas("hostile").dispose();
             state.getGSM().set(new ShipState(state.getGSM()));
+        }
         else if(currentOption.elementAt(0) == 4){
             currentOption.clear();
             state.getGSM().push(new OptionState(state.getGSM()));
