@@ -44,7 +44,7 @@ public class Hero extends AnimatedObject {
 
         food = 2;
         artifacts = 0;
-        gold = 1000;
+        gold = 10;
     }
 
     public void setPosition(float x, float y){

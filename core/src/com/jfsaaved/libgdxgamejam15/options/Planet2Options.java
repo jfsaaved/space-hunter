@@ -1,5 +1,6 @@
 package com.jfsaaved.libgdxgamejam15.options;
 
+import com.jfsaaved.libgdxgamejam15.states.OptionState;
 import com.jfsaaved.libgdxgamejam15.states.Planet2State;
 import com.jfsaaved.libgdxgamejam15.states.ShipState;
 import com.jfsaaved.libgdxgamejam15.ui.MenuImages;
@@ -33,6 +34,10 @@ public class Planet2Options extends Options {
             sellOptions();
         else if(currentOption.elementAt(0) == 3)
             state.getGSM().set(new ShipState(state.getGSM()));
+        else if(currentOption.elementAt(0) == 4){
+            currentOption.clear();
+            state.getGSM().push(new OptionState(state.getGSM()));
+        }
 
         if(currentOption.empty()){
             state.statusImages.resetPreviewAll();

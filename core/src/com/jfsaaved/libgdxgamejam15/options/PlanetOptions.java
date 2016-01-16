@@ -1,5 +1,6 @@
 package com.jfsaaved.libgdxgamejam15.options;
 
+import com.jfsaaved.libgdxgamejam15.states.OptionState;
 import com.jfsaaved.libgdxgamejam15.states.PlanetState;
 import com.jfsaaved.libgdxgamejam15.states.ShipState;
 import com.jfsaaved.libgdxgamejam15.ui.MenuImages;
@@ -38,6 +39,10 @@ public class PlanetOptions extends Options {
             campOptions();
         else if(currentOption.elementAt(0) == 3)
             state.getGSM().set(new ShipState(state.getGSM()));
+        else if(currentOption.elementAt(0) == 4){
+            currentOption.clear();
+            state.getGSM().push(new OptionState(state.getGSM()));
+        }
 
         if(currentOption.empty()){
             state.statusImages.resetPreviewAll();
@@ -73,7 +78,7 @@ public class PlanetOptions extends Options {
                 String[] dialogue = {"HUNT FOR FOOD"};
                 state.dialogueImages.setDialogues(dialogue);
                 setIncrementPreview(state.hero.getHunter(), 1, Stats.HUNTER.getValue());
-                setIncrementPreview(state.hero.getFood(), (state.hero.getHunter() / 10), Stats.FOOD.getValue());
+                setIncrementPreview(state.hero.getFood(), (state.hero.getHunter() / 15), Stats.FOOD.getValue());
                 setDecrementPreview(state.hero.getHealth(), 50, Stats.HEALTH.getValue());
                 if(state.hero.getEnergy() - 20 <= 0)
                     setDecrementPreview(state.hero.getHunger(), 20, Stats.HUNGER.getValue());
@@ -146,7 +151,7 @@ public class PlanetOptions extends Options {
         changeStatsAt(Stats.HEALTH.getValue(), -50);
         changeStatsAt(Stats.ENERGY.getValue(), -40);
         changeStatsAt(Stats.HUNTER.getValue(), 1);
-        changeStatsAt(Stats.FOOD.getValue(), (state.hero.getFood()/10));
+        changeStatsAt(Stats.FOOD.getValue(), (state.hero.getHunter()/15));
         String[] notification = {
                 "+1 HUNTER",
                 "+"+(state.hero.getFood()-originalFood)+" FOOD",

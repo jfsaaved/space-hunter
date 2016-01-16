@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.jfsaaved.libgdxgamejam15.Main;
+import com.jfsaaved.libgdxgamejam15.handler.MainPreferences;
 import com.jfsaaved.libgdxgamejam15.objects.Hero;
 import com.jfsaaved.libgdxgamejam15.objects.Ship;
 import com.jfsaaved.libgdxgamejam15.ui.BorderImage;
@@ -40,13 +41,15 @@ public class MenuState extends State{
         this.background = new TextureRegion(Main.resources.getAtlas("assets").findRegion("space"));
         title = new TextImage("SPACE HUNTER", 300, 400, 5, 0);
         title.shiftHalfLeft();
-        start = new TextImage("START GAME", 300, 300, 3, 0);
+        start = new TextImage("NEW GAME", 300, 300, 3, 0);
         start.shiftHalfLeft();
         load = new TextImage("LOAD GAME", 300, 250, 3, 0);
         load.shiftHalfLeft();
 
-        pointer = new PointerImage(start.getTextX(), start.getTextY(), (int) start.getTextHeight(), 3, 1);
+        pointer = new PointerImage(load.getTextX(), start.getTextY(), (int) start.getTextHeight(), 3, 1);
         pointer.setX(pointer.getX() - pointer.getWidth());
+
+        preferences = new MainPreferences();
 
     }
 
@@ -60,6 +63,10 @@ public class MenuState extends State{
         if(Gdx.input.isKeyJustPressed(Input.Keys.Z)){
             if(pointer.getOption() == 0)
                 this.gsm.set(new ShipState(gsm));
+            else if(pointer.getOption() == 1){
+                preferences.load(hero, ship, this);
+                this.gsm.set(new ShipState(gsm));
+            }
         }
     }
 

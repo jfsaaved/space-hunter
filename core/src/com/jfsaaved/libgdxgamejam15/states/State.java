@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jfsaaved.libgdxgamejam15.Main;
+import com.jfsaaved.libgdxgamejam15.handler.MainPreferences;
 import com.jfsaaved.libgdxgamejam15.objects.Hero;
 import com.jfsaaved.libgdxgamejam15.objects.Ship;
 import com.jfsaaved.libgdxgamejam15.options.ShipOptions;
@@ -48,6 +49,9 @@ public abstract class State {
     public static float travelTime;
     public static int nextSystem;
 
+    // Preferences
+    public static MainPreferences preferences;
+
     protected State(GSM gsm){
         cam = new OrthographicCamera();
         mouse = new Vector3();
@@ -64,6 +68,22 @@ public abstract class State {
             days += 1;
             turns = 4;
         }
+    }
+
+    public void setDays(int i){
+        days = i;
+    }
+
+    public void setTurns(int i){
+        turns = i;
+    }
+
+    public int getDays(){
+        return days;
+    }
+
+    public int getTurns(){
+        return turns;
     }
 
     protected void updateCam(int width, int height, float x, float y){

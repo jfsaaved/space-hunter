@@ -1,5 +1,6 @@
 package com.jfsaaved.libgdxgamejam15.options;
 
+import com.jfsaaved.libgdxgamejam15.states.OptionState;
 import com.jfsaaved.libgdxgamejam15.states.Planet2State;
 import com.jfsaaved.libgdxgamejam15.states.PlanetState;
 import com.jfsaaved.libgdxgamejam15.states.ShipState;
@@ -42,6 +43,16 @@ public class ShipOptions extends Options {
                     state.getGSM().set(new PlanetState(state.getGSM()));
                 else
                     state.getGSM().set(new Planet2State(state.getGSM()));
+            }
+        }else if(currentOption.elementAt(0) == 4) {
+            ShipState shipState = (ShipState) state;
+            if(shipState.getTravelTime() > 0){
+                String[] notification = {"FAILED","YOU ARE","TRAVELLING"};
+                state.notificationImages = new NotificationImages(state.getCam(),notification);
+                currentOption.clear();
+            }else {
+                currentOption.clear();
+                state.getGSM().push(new OptionState(state.getGSM()));
             }
         }
 

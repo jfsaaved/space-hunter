@@ -164,10 +164,17 @@ public class ShipState extends State{
     public void checkTravel(float dt){
         if(travelTime > 0f) {
             travelTime -= 100f * dt;
-            if(backgroundX < background.getRegionWidth())
-                backgroundX += 100f * dt;
-            else
-                backgroundX = 0;
+            if(currentSystem == 0) {
+                if (backgroundX < background.getRegionWidth())
+                    backgroundX += 100f * dt;
+                else
+                    backgroundX = 0;
+            }else{
+                if (backgroundX > 0)
+                    backgroundX -= 100f * dt;
+                else
+                    backgroundX = background.getRegionWidth();
+            }
         } else {
             if(currentSystem != nextSystem) {
                 currentSystem = nextSystem;
@@ -178,10 +185,18 @@ public class ShipState extends State{
                 statusImages.setStatsShipFuel(ship.getFuel());
                 statusImages.setStatsShipHealth(ship.getHealth());
             }
-            if(backgroundX < background.getRegionWidth())
-                backgroundX += 5f * dt;
-            else
-                backgroundX = 0;
+
+            if(currentSystem == 1) {
+                if (backgroundX < background.getRegionWidth())
+                    backgroundX += 5f * dt;
+                else
+                    backgroundX = 0;
+            }else{
+                if (backgroundX > 0)
+                    backgroundX -= 5f * dt;
+                else
+                    backgroundX = background.getRegionWidth();
+            }
         }
     }
 
