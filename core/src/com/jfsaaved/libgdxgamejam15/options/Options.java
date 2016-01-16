@@ -25,6 +25,7 @@ public abstract class Options {
     int originalShipFuel;
     int originalArtifacts;
     int originalFood;
+    int originalGold;
 
     // Indices for Type
     // health = 0, hunger = 1, energy = 2, hunter = 3, explorer = 4, mechanic = 5,
@@ -64,21 +65,27 @@ public abstract class Options {
         originalShipFuel = state.ship.getFuel();
         originalArtifacts = state.hero.getArtifacts();
         originalFood = state.hero.getFood();
+        originalGold = state.hero.getGold();
     }
 
     public abstract void setHoverDesc(int i);
 
     protected void setIncrementPreview(int heroStats, int previewValue, int previewAt) {
+
+        int max = 100;
+        if(previewAt == Stats.GOLD.getValue() || previewAt == Stats.ARTIFACTS.getValue() || previewAt == Stats.FOOD.getValue())
+            max = 9999;
+
         Color color = Color.GREEN;
-        int previewThreshold = 101 - previewValue;
+        int previewThreshold = (max+1) - previewValue;
         int colourAt = getColourIndex(previewAt);
 
         if(heroStats < previewThreshold) {
             state.statusImages.changeColourAt(colourAt, color);
             state.statusImages.setPreviewAt(previewAt, previewValue);
-        } else if (heroStats >=  previewThreshold && heroStats < 100){
+        } else if (heroStats >=  previewThreshold && heroStats < max){
             state.statusImages.changeColourAt(colourAt, color);
-            state.statusImages.setPreviewAt(previewAt, 100 - heroStats);
+            state.statusImages.setPreviewAt(previewAt, max - heroStats);
         }
     }
 
@@ -103,11 +110,16 @@ public abstract class Options {
     // Type true = increment, false = decrement
     protected void changeStatsAt(int index, int value) {
         if(value > 0) {
-            int threshold = 101 - value;
+
+            int max = 100;
+            if(index == Stats.GOLD.getValue() || index == Stats.ARTIFACTS.getValue() || index == Stats.FOOD.getValue())
+                max = 9999;
+
+            int threshold = (max+1) - value;
             if (getStatusAt(index) < threshold)
                 setStatusAt(index, getStatusAt(index) + value);
-            else if (getStatusAt(index) >= threshold && getStatusAt(index) < 100)
-                setStatusAt(index, 100);
+            else if (getStatusAt(index) >= threshold && getStatusAt(index) < max)
+                setStatusAt(index, max);
         }
         else if(value < 0) {
             int threshold = -(value) - 1;

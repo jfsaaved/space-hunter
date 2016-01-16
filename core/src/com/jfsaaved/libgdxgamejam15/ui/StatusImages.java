@@ -61,15 +61,15 @@ public class StatusImages {
                 "     HERO     ","HEALTH    "+percentageToString(this.health)+"%",
                 "HUNGER    "+percentageToString(this.hunger)+"%",
                 "ENERGY    "+percentageToString(this.energy)+"%",
-                "HUNTER      "+levelToString(this.hunter),
-                "EXPLORER    "+levelToString(this.explorer),
-                "MECHANIC    "+levelToString(this.mechanic),
+                "HUNTER    "+levelToString(this.hunter),
+                "EXPLORER  "+levelToString(this.explorer),
+                "MECHANIC  "+levelToString(this.mechanic),
                 "     SHIP     ","HEALTH    "+percentageToString(this.shipHealth)+"%",
                 "FUEL      "+percentageToString(this.shipFuel)+"%",
-                "LEVEL       "+levelToString(this.shipLevel),
-                "   SUPPLIES   ","FOOD        "+levelToString(this.food),
-                "ARTIFACTS   "+levelToString(this.artifacts),
-                "GOLD       $"+levelToString(this.gold)};
+                "LEVEL     "+levelToString(this.shipLevel),
+                "   SUPPLIES   ","FOOD      "+levelToString(this.food),
+                "ARTIFACTS "+levelToString(this.artifacts),
+                "GOLD     $"+levelToString(this.gold)};
 
         stats = new ArrayList<TextImage>();
         float tempX = statsBorder.getBorderX() + 7;
@@ -118,7 +118,7 @@ public class StatusImages {
 
     private String levelToString(int val){
         String value = val + "";
-        while(value.length() < 2)
+        while(value.length() < 4)
             value = " " + value;
         return value;
     }
@@ -128,15 +128,15 @@ public class StatusImages {
                 "     HERO     ","HEALTH    "+percentageToString(this.health + previews.get(0))+"%",
                 "HUNGER    "+percentageToString(this.hunger + previews.get(1))+"%",
                 "ENERGY    "+percentageToString(this.energy + previews.get(2))+"%",
-                "HUNTER      "+levelToString(this.hunter + previews.get(3)),
-                "EXPLORER    "+levelToString(this.explorer + previews.get(4)),
-                "MECHANIC    "+levelToString(this.mechanic + previews.get(5)),
+                "HUNTER    "+levelToString(this.hunter + previews.get(3)),
+                "EXPLORER  "+levelToString(this.explorer + previews.get(4)),
+                "MECHANIC  "+levelToString(this.mechanic + previews.get(5)),
                 "     SHIP     ","HEALTH    "+percentageToString(this.shipHealth + previews.get(6))+"%",
                 "FUEL      "+percentageToString(this.shipFuel + previews.get(7))+"%",
-                "LEVEL       "+levelToString(this.shipLevel + previews.get(8)),
-                "   SUPPLIES   ","FOOD        "+levelToString(this.food + previews.get(9)),
-                "ARTIFACTS   "+levelToString(this.artifacts + previews.get(10)),
-                "GOLD       $"+levelToString(this.gold + previews.get(11))};
+                "LEVEL     "+levelToString(this.shipLevel + previews.get(8)),
+                "   SUPPLIES   ","FOOD      "+levelToString(this.food + previews.get(9)),
+                "ARTIFACTS "+levelToString(this.artifacts + previews.get(10)),
+                "GOLD     $"+levelToString(this.gold + previews.get(11))};
 
         // health = 1, hunger = 2, energy = 3, hunter = 4, explorer = 5, mechanic = 6, shealth = 8, sfueld = 9, slevel = 10;
         int i = 0;

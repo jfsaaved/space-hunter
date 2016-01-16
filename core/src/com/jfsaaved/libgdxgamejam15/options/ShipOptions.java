@@ -18,20 +18,31 @@ public class ShipOptions extends Options {
     @Override
     public void handleInput(){
         super.handleInput();
-        if(currentOption.elementAt(0) == 0)
-            navigateOptions();
+        if(currentOption.elementAt(0) == 0) {
+            ShipState shipState = (ShipState) state;
+            if(shipState.getTravelTime() > 0){
+                String[] notification = {"FAILED","YOU ARE","TRAVELLING"};
+                state.notificationImages = new NotificationImages(state.getCam(),notification);
+                currentOption.clear();
+            }else
+                navigateOptions();
+        }
         else if(currentOption.elementAt(0) == 1)
             suppliesOptions();
         else if(currentOption.elementAt(0) == 2)
             maintenanceOptions();
         else if(currentOption.elementAt(0) == 3) {
-
             ShipState shipState = (ShipState) state;
-
-            if (shipState.getCurrentSystem() == 0)
-                state.getGSM().set(new PlanetState(state.getGSM()));
-            else
-                state.getGSM().set(new Planet2State(state.getGSM()));
+            if(shipState.getTravelTime() > 0){
+                String[] notification = {"FAILED","YOU ARE","TRAVELLING"};
+                state.notificationImages = new NotificationImages(state.getCam(),notification);
+                currentOption.clear();
+            }else {
+                if (shipState.getCurrentSystem() == 0)
+                    state.getGSM().set(new PlanetState(state.getGSM()));
+                else
+                    state.getGSM().set(new Planet2State(state.getGSM()));
+            }
         }
 
         if(currentOption.empty()){

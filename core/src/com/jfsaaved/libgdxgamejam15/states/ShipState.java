@@ -41,7 +41,7 @@ public class ShipState extends State{
     public ShipState(GSM gsm) {
         super(gsm);
 
-        hero.setPosition(Main.WIDTH/2, Main.HEIGHT/2);
+        hero.setPosition(Main.WIDTH/2, Main.HEIGHT/2 + 3);
 
         // Objects stuff
         hero.setBoundaries(ship.getX(), ship.getX() + ship.getWidth());

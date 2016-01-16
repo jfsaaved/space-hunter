@@ -37,7 +37,7 @@ public class PlanetState extends State {
     public PlanetState(GSM gsm){
         super(gsm);
 
-        hero.setPosition(Main.WIDTH/2, Main.HEIGHT/2);
+        hero.setPosition(Main.WIDTH/2, Main.HEIGHT/2 + 3);
 
         // Images
         this.background = new Texture(Gdx.files.internal("bg.png"));
