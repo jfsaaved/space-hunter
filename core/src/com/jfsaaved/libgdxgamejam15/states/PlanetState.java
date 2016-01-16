@@ -12,8 +12,10 @@ import com.jfsaaved.libgdxgamejam15.objects.Ship;
 import com.jfsaaved.libgdxgamejam15.options.PlanetOptions;
 import com.jfsaaved.libgdxgamejam15.options.ShipOptions;
 import com.jfsaaved.libgdxgamejam15.ui.BorderImage;
+import com.jfsaaved.libgdxgamejam15.ui.DayImage;
 import com.jfsaaved.libgdxgamejam15.ui.DialogueImages;
 import com.jfsaaved.libgdxgamejam15.ui.MenuImages;
+import com.jfsaaved.libgdxgamejam15.ui.NotificationImages;
 import com.jfsaaved.libgdxgamejam15.ui.PointerImage;
 import com.jfsaaved.libgdxgamejam15.ui.StatusImages;
 import com.jfsaaved.libgdxgamejam15.ui.TextImage;
@@ -26,6 +28,7 @@ public class PlanetState extends State {
     // Backgrounds
     private Texture background;
     private TextureRegion space;
+    private float spaceX;
     private TextureRegion ground;
 
     // U.I.
@@ -34,6 +37,8 @@ public class PlanetState extends State {
     public PlanetState(GSM gsm){
         super(gsm);
 
+        hero.setPosition(Main.WIDTH/2, Main.HEIGHT/2);
+
         // Images
         this.background = new Texture(Gdx.files.internal("bg.png"));
         this.space = new TextureRegion(Main.resources.getAtlas("assets").findRegion("space"));
@@ -41,8 +46,11 @@ public class PlanetState extends State {
 
         // Camera initializations
         camX = hero.getX();
-        camY = hero.getY() + 50;
+        camY = this.hero.getY() + 50;
         this.updateCam(Main.WIDTH/2, Main.HEIGHT/2, camX, camY);
+
+        // Day image
+        dayImage = new DayImage(cam,days);
 
         // Options
         // Optimal size "       OPTIONS"
@@ -51,8 +59,13 @@ public class PlanetState extends State {
 
         // Dialogue
         // Full width is Hello World! This is a testing. Check out my mixtape at ayyyy.
-        String[] dialogue = {"You have landed at some planet."};
+        String[] dialogue = {"YOU HAVE LANDED AT BLACK MAMBA 24"};
         dialogueImages = new DialogueImages(this.cam, dialogue);
+
+        // Notification images
+        String[] notification = {"SUCCESS","+20% HUNGER","NO ENERGY","NO FUEL"};
+        notificationImages = new NotificationImages(cam, notification);
+        notificationImages.setHide(true);
 
         // Status images
         // int health, int hunger, int energy, int hunter, int explorer, int mechanic, int shipHealth, int shipFuel, int shipLevel
@@ -87,8 +100,8 @@ public class PlanetState extends State {
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.Z)){
             planetOptions.pushOption(menuImages.getOption());
-            planetOptions.setHoverDesc(menuImages.getOption());
             planetOptions.handleInput();
+            planetOptions.setHoverDesc(menuImages.getOption());
             statusImages.changeStats(hero.getHealth(),
                     hero.getHunger(),
                     hero.getEnergy(),
@@ -107,27 +120,68 @@ public class PlanetState extends State {
     @Override
     protected void update(float dt) {
         handleInput(dt);
+
+        checkGameOver(dt);
+        checkBackground(dt);
+
         hero.update(dt);
         menuImages.update(dt);
         dialogueImages.update(dt);
+        notificationImages.update(dt);
         statusImages.update(dt);
+        dayImage.update(dt, days);
+
+    }
+
+    public void checkBackground(float dt){
+        if(spaceX < space.getRegionWidth())
+            spaceX += 5f * dt;
+        else
+            spaceX = 0;
+    }
+
+    public void checkGameOver(float dt){
+        if(hero.getHunger() <= 0)
+            getGSM().set(new GameOverState(getGSM()));
+        if(hero.getHealth() <= 0)
+            getGSM().set(new GameOverState(getGSM()));
+        if(ship.getFuel() <= 0)
+            getGSM().set(new GameOverState(getGSM()));
+        if(ship.getHealth() <= 0)
+            getGSM().set(new GameOverState(getGSM()));
+        if(hero.getEnergy() <= 0) {
+            hero.setEnergy(50);
+            hero.setHunger(hero.getHunger() - 20);
+
+            String[] notification = {"YOU PASSED OUT","ENERGY     %"+hero.getEnergy(),"HUNGER     %"+hero.getHunger()};
+            notificationImages = new NotificationImages(getCam(),notification);
+            statusImages.setStatsEnergy(hero.getEnergy());
+            statusImages.setStatsHunger(hero.getHunger());
+
+            useTurn(4);
+        }
     }
 
     @Override
     protected void render(SpriteBatch sb) {
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
-        sb.draw(space, 0, hero.getY());
-        sb.draw(space, space.getRegionWidth(), hero.getY());
+
+        sb.draw(space, spaceX, hero.getY());
+        sb.draw(space, spaceX - space.getRegionWidth(), hero.getY());
+        sb.draw(space, spaceX + space.getRegionWidth(), hero.getY());
+
         sb.draw(background, 0, hero.getY());
         sb.draw(background, background.getWidth(), hero.getY());
         sb.draw(ground, 0, hero.getY() - 30);
         sb.draw(ground, ground.getRegionWidth(), hero.getY() - 30);
-        sb.draw(ground, 0, hero.getY() - 30);
         sb.draw(ground, 2 * ground.getRegionWidth(), hero.getY() - 30);
+
         menuImages.drawMenu(sb);
         dialogueImages.drawDialogue(sb);
+        notificationImages.drawNotification(sb);
         statusImages.drawStatus(sb);
+        dayImage.drawDay(sb);
 
         hero.draw(sb);
         sb.end();
@@ -137,9 +191,12 @@ public class PlanetState extends State {
     protected void shapeRender(ShapeRenderer sr) {
         sr.setProjectionMatrix(cam.combined);
         sr.begin(ShapeRenderer.ShapeType.Line);
+
         menuImages.drawMenuBox(sr);
         dialogueImages.drawDialogueBox(sr);
+        notificationImages.drawNotificationBox(sr);
         statusImages.drawStatusBox(sr);
+        dayImage.drawDayBox(sr);
 
         hero.drawBox(sr);
         sr.end();

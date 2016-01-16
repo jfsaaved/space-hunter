@@ -12,6 +12,7 @@ import com.jfsaaved.libgdxgamejam15.Main;
 import com.jfsaaved.libgdxgamejam15.objects.Hero;
 import com.jfsaaved.libgdxgamejam15.objects.Ship;
 import com.jfsaaved.libgdxgamejam15.options.ShipOptions;
+import com.jfsaaved.libgdxgamejam15.ui.DayImage;
 import com.jfsaaved.libgdxgamejam15.ui.DialogueImages;
 import com.jfsaaved.libgdxgamejam15.ui.MenuImages;
 import com.jfsaaved.libgdxgamejam15.ui.NotificationImages;
@@ -38,6 +39,14 @@ public abstract class State {
     public DialogueImages dialogueImages;
     public NotificationImages notificationImages;
     public StatusImages statusImages;
+    public DayImage dayImage;
+
+    // Travelling
+    public static int days;
+    public static int turns;
+    public static int currentSystem;
+    public static float travelTime;
+    public static int nextSystem;
 
     protected State(GSM gsm){
         cam = new OrthographicCamera();
@@ -47,6 +56,14 @@ public abstract class State {
 
         this.gsm = gsm;
         this.updateCam(Main.WIDTH, Main.HEIGHT, camX, camY);
+    }
+
+    public void useTurn(int i){
+        turns -= i;
+        if(turns <= 0) {
+            days += 1;
+            turns = 4;
+        }
     }
 
     protected void updateCam(int width, int height, float x, float y){

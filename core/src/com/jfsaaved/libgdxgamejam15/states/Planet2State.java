@@ -2,71 +2,59 @@ package com.jfsaaved.libgdxgamejam15.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.FPSLogger;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.jfsaaved.libgdxgamejam15.Main;
-import com.jfsaaved.libgdxgamejam15.objects.Hero;
-import com.jfsaaved.libgdxgamejam15.objects.Ship;
-import com.jfsaaved.libgdxgamejam15.options.Options;
-import com.jfsaaved.libgdxgamejam15.options.ShipOptions;
-import com.jfsaaved.libgdxgamejam15.ui.BorderImage;
+import com.jfsaaved.libgdxgamejam15.options.Planet2Options;
 import com.jfsaaved.libgdxgamejam15.ui.DayImage;
 import com.jfsaaved.libgdxgamejam15.ui.DialogueImages;
 import com.jfsaaved.libgdxgamejam15.ui.MenuImages;
 import com.jfsaaved.libgdxgamejam15.ui.NotificationImages;
-import com.jfsaaved.libgdxgamejam15.ui.PointerImage;
 import com.jfsaaved.libgdxgamejam15.ui.StatusImages;
-import com.jfsaaved.libgdxgamejam15.ui.TextImage;
-
-import java.util.ArrayList;
-import java.util.Random;
 
 /**
- * Created by 343076 on 30/12/2015.
+ * Created by 343076 on 16/01/2016.
  */
-public class ShipState extends State{
+public class Planet2State extends State {
 
-    // Space background
-    private TextureRegion background;
-    private float backgroundX;
+    // Backgrounds
+    private Texture background;
+    private Texture ground;
+    private TextureRegion space;
+    private float spaceX;
 
     // U.I.
-    public ShipOptions shipOptions;
+    private Planet2Options planetOptions;
 
-    // Travelling
-
-
-    public ShipState(GSM gsm) {
+    public Planet2State(GSM gsm){
         super(gsm);
 
         hero.setPosition(Main.WIDTH/2, Main.HEIGHT/2);
 
-        // Objects stuff
-        hero.setBoundaries(ship.getX(), ship.getX() + ship.getWidth());
-
-        // Background stuff
-        this.background = new TextureRegion(Main.resources.getAtlas("assets").findRegion("space"));
-        backgroundX = 0;
+        // Images
+        this.background = new Texture(Gdx.files.internal("city.png"));
+        this.space = new TextureRegion(Main.resources.getAtlas("assets").findRegion("space"));
+        this.ground = new Texture(Gdx.files.internal("ground2.png"));
 
         // Camera initializations
         camX = hero.getX();
-        camY = hero.getY() + 50;
+        camY = this.hero.getY() + 50;
         this.updateCam(Main.WIDTH/2, Main.HEIGHT/2, camX, camY);
 
         // Day image
         dayImage = new DayImage(cam,days);
 
-        // Menu image
+        // Options
         // Optimal size "       OPTIONS"
-        String[] options = {"NAVIGATE","HERO","SHIP","LAND","OPTIONS"};
-        menuImages = new MenuImages(cam, options);
+        String[] options = {"BUY FOOD","SHIP SERVICE","SELL","SHIP","OPTIONS"};
+        menuImages = new MenuImages(this.cam, options);
 
         // Dialogue
         // Full width is Hello World! This is a testing. Check out my mixtape at ayyyy.
-        String[] dialogue = {"NAVIGATE THROUGH THE GALAXY TO DIFFERENT SYSTEMS"};
-        dialogueImages = new DialogueImages(cam, dialogue);
+        String[] dialogue = {"YOU HAVE LANDED AT FROBE 8"};
+        dialogueImages = new DialogueImages(this.cam, dialogue);
 
         // Notification images
         String[] notification = {"SUCCESS","+20% HUNGER","NO ENERGY","NO FUEL"};
@@ -89,8 +77,7 @@ public class ShipState extends State{
                 hero.getArtifacts(),
                 hero.getGold());
 
-        // Create an Options object that will handle U.I. stuff
-        shipOptions = new ShipOptions(this);
+        planetOptions = new Planet2Options(this);
     }
 
     @Override
@@ -103,12 +90,12 @@ public class ShipState extends State{
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             menuImages.handleInput();
-            shipOptions.setHoverDesc(menuImages.getOption());
+            planetOptions.setHoverDesc(menuImages.getOption());
         }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.Z)) {
-            shipOptions.pushOption(menuImages.getOption());
-            shipOptions.handleInput();
-            shipOptions.setHoverDesc(menuImages.getOption());
+        if(Gdx.input.isKeyJustPressed(Input.Keys.Z)){
+            planetOptions.pushOption(menuImages.getOption());
+            planetOptions.handleInput();
+            planetOptions.setHoverDesc(menuImages.getOption());
             statusImages.changeStats(hero.getHealth(),
                     hero.getHunger(),
                     hero.getEnergy(),
@@ -129,7 +116,7 @@ public class ShipState extends State{
         handleInput(dt);
 
         checkGameOver(dt);
-        checkTravel(dt);
+        checkBackground(dt);
 
         hero.update(dt);
         menuImages.update(dt);
@@ -137,6 +124,14 @@ public class ShipState extends State{
         notificationImages.update(dt);
         statusImages.update(dt);
         dayImage.update(dt, days);
+
+    }
+
+    public void checkBackground(float dt){
+        if(spaceX < space.getRegionWidth())
+            spaceX += 5f * dt;
+        else
+            spaceX = 0;
     }
 
     public void checkGameOver(float dt){
@@ -157,31 +152,7 @@ public class ShipState extends State{
             statusImages.setStatsEnergy(hero.getEnergy());
             statusImages.setStatsHunger(hero.getHunger());
 
-            shipOptions.calculateTravelingTurns(4);
-        }
-    }
-
-    public void checkTravel(float dt){
-        if(travelTime > 0f) {
-            travelTime -= 100f * dt;
-            if(backgroundX < background.getRegionWidth())
-                backgroundX += 100f * dt;
-            else
-                backgroundX = 0;
-        } else {
-            if(currentSystem != nextSystem) {
-                currentSystem = nextSystem;
-                ship.setFuel(ship.getFuel() - 20);
-                ship.setHealth(ship.getHealth() - 20);
-                String[] notification = {"ARRIVED AT","SYSTEM "+(currentSystem+1),"-20% FUEL","-20% SHIP HP"};
-                notificationImages = new NotificationImages(cam,notification);
-                statusImages.setStatsShipFuel(ship.getFuel());
-                statusImages.setStatsShipHealth(ship.getHealth());
-            }
-            if(backgroundX < background.getRegionWidth())
-                backgroundX += 5f * dt;
-            else
-                backgroundX = 0;
+            useTurn(4);
         }
     }
 
@@ -189,11 +160,18 @@ public class ShipState extends State{
     protected void render(SpriteBatch sb) {
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
-        sb.draw(background, backgroundX, 0);
-        sb.draw(background, backgroundX + background.getRegionWidth(), 0);
-        sb.draw(background, backgroundX - background.getRegionWidth(), 0);
-        ship.draw(sb);
-        hero.draw(sb);
+
+        sb.draw(space, spaceX, hero.getY());
+        sb.draw(space, spaceX - space.getRegionWidth(), hero.getY());
+        sb.draw(space, spaceX + space.getRegionWidth(), hero.getY());
+
+        sb.draw(background, 0, hero.getY() - 10);
+        sb.draw(background, background.getWidth(), hero.getY() - 10);
+
+        sb.draw(ground, 0, hero.getY() - 30);
+        sb.draw(ground, ground.getWidth(), hero.getY() - 30);
+        sb.draw(ground, 2 * ground.getWidth(), hero.getY() - 30);
+        sb.draw(ground, 3 * ground.getWidth(), hero.getY() - 30);
 
         menuImages.drawMenu(sb);
         dialogueImages.drawDialogue(sb);
@@ -201,6 +179,7 @@ public class ShipState extends State{
         statusImages.drawStatus(sb);
         dayImage.drawDay(sb);
 
+        hero.draw(sb);
         sb.end();
     }
 
@@ -208,8 +187,6 @@ public class ShipState extends State{
     protected void shapeRender(ShapeRenderer sr) {
         sr.setProjectionMatrix(cam.combined);
         sr.begin(ShapeRenderer.ShapeType.Line);
-        hero.drawBox(sr);
-        ship.drawBox(sr);
 
         menuImages.drawMenuBox(sr);
         dialogueImages.drawDialogueBox(sr);
@@ -217,6 +194,7 @@ public class ShipState extends State{
         statusImages.drawStatusBox(sr);
         dayImage.drawDayBox(sr);
 
+        hero.drawBox(sr);
         sr.end();
     }
 
@@ -225,32 +203,6 @@ public class ShipState extends State{
         Main.WIDTH = width;
         Main.HEIGHT = height;
         this.updateCam(Main.WIDTH/2, Main.HEIGHT/2, camX, camY);
-    }
-
-    public boolean travelTo(int i){
-        boolean success = false;
-        if(currentSystem != i) {
-            travelTime = 1000f;
-            nextSystem = i;
-            success = true;
-        }
-        return success;
-    }
-
-    public int getCurrentSystem(){
-        return currentSystem;
-    }
-
-    public void setTravelTime(float time){
-        travelTime = time;
-    }
-
-    public float getTravelTime(){
-        return travelTime;
-    }
-
-    public void changeTravelTime(float time){
-        travelTime += time;
     }
 
 }

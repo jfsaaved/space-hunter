@@ -82,6 +82,18 @@ public class StatusImages {
         }
     }
 
+    public void setStatsEnergy(int energy){
+        this.energy = energy;
+    }
+
+    public void setStatsHealth(int health) { this.health = health; }
+
+    public void setStatsHunger(int hunger) { this.hunger = hunger; }
+
+    public void setStatsShipFuel(int fuel){ this.shipFuel = fuel ;}
+
+    public void setStatsShipHealth(int health) { this.shipHealth = health ;}
+
     public void changeStats(int health, int hunger, int energy, int hunter, int explorer, int mechanic, int shipHealth, int shipFuel, int shipLevel, int food, int artifacts, int gold) {
         this.health = health;
         this.hunger = hunger;

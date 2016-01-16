@@ -2,8 +2,10 @@ package com.jfsaaved.libgdxgamejam15.options;
 
 import com.badlogic.gdx.graphics.Color;
 import com.jfsaaved.libgdxgamejam15.states.GSM;
+import com.jfsaaved.libgdxgamejam15.states.GameOverState;
 import com.jfsaaved.libgdxgamejam15.states.ShipState;
 import com.jfsaaved.libgdxgamejam15.states.State;
+import com.jfsaaved.libgdxgamejam15.ui.NotificationImages;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -22,6 +24,7 @@ public abstract class Options {
     int originalShipHealth;
     int originalShipFuel;
     int originalArtifacts;
+    int originalFood;
 
     // Indices for Type
     // health = 0, hunger = 1, energy = 2, hunter = 3, explorer = 4, mechanic = 5,
@@ -60,6 +63,7 @@ public abstract class Options {
         originalShipHealth = state.ship.getHealth();
         originalShipFuel = state.ship.getFuel();
         originalArtifacts = state.hero.getArtifacts();
+        originalFood = state.hero.getFood();
     }
 
     public abstract void setHoverDesc(int i);

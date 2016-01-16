@@ -9,6 +9,7 @@ import com.jfsaaved.libgdxgamejam15.Main;
 import com.jfsaaved.libgdxgamejam15.objects.Hero;
 import com.jfsaaved.libgdxgamejam15.objects.Ship;
 import com.jfsaaved.libgdxgamejam15.ui.BorderImage;
+import com.jfsaaved.libgdxgamejam15.ui.DayImage;
 import com.jfsaaved.libgdxgamejam15.ui.PointerImage;
 import com.jfsaaved.libgdxgamejam15.ui.TextImage;
 
@@ -26,6 +27,12 @@ public class MenuState extends State{
 
     public MenuState(GSM gsm){
         super(gsm);
+
+        days = 0;
+        turns = 4;
+        currentSystem = 0;
+        travelTime = 0f;
+        nextSystem = 0;
 
         ship = new Ship(Main.WIDTH/2 - 150, Main.HEIGHT/2, 300, 150);
         hero = new Hero(Main.WIDTH/2, Main.HEIGHT/2, 36, 54, Main.resources.getAtlas("assets").findRegion("player"));
@@ -82,6 +89,7 @@ public class MenuState extends State{
     protected void shapeRender(ShapeRenderer sr){
         sr.setProjectionMatrix(cam.combined);
         sr.begin(ShapeRenderer.ShapeType.Line);
+        title.drawTextBox(sr);
         start.drawTextBox(sr);
         load.drawTextBox(sr);
         pointer.drawPointerBox(sr);

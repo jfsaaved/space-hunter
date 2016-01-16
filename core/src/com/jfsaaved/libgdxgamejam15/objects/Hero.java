@@ -34,17 +34,22 @@ public class Hero extends AnimatedObject {
         this.boundaryX1 = 0;
         this.boundaryX2 = Main.WIDTH;
 
-        hunger = 74;
-        energy = 99;
-        health = 50;
+        hunger = 100;
+        energy = 100;
+        health = 100;
 
         hunter = 1;
         explorer = 1;
         mechanic = 1;
 
-        food = 5;
+        food = 2;
         artifacts = 0;
-        gold = 5;
+        gold = 10;
+    }
+
+    public void setPosition(float x, float y){
+        this.box.setX(x);
+        this.box.setY(y);
     }
 
     // The two x boundaries for the player's x position
