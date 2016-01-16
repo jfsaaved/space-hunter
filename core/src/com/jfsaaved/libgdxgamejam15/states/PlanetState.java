@@ -28,29 +28,20 @@ public class PlanetState extends State {
     private TextureRegion space;
     private TextureRegion ground;
 
-    // Objects
-    public Hero hero;
-    public Ship ship;
-
     // U.I.
-    public MenuImages menuImages;
-    public DialogueImages dialogueImages;
-    public StatusImages statusImages;
     private PlanetOptions planetOptions;
 
     public PlanetState(GSM gsm){
         super(gsm);
 
         // Images
-        this.ship = new Ship(Main.WIDTH/2 - 150, Main.HEIGHT/2, 300, 150);
-        this.hero = new Hero(Main.WIDTH/2, Main.HEIGHT/2, 36, 54, Main.resources.getAtlas("assets").findRegion("player"));
         this.background = new Texture(Gdx.files.internal("bg.png"));
         this.space = new TextureRegion(Main.resources.getAtlas("assets").findRegion("space"));
         this.ground = new TextureRegion(Main.resources.getAtlas("assets").findRegion("ground1"));
 
         // Camera initializations
-        camX = this.hero.getX();
-        camY = this.hero.getY() + 50;
+        camX = hero.getX();
+        camY = hero.getY() + 50;
         this.updateCam(Main.WIDTH/2, Main.HEIGHT/2, camX, camY);
 
         // Options

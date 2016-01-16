@@ -94,8 +94,10 @@ public class TextImage {
             index = 69;
         else if((int) c == 63) // Question mark
             index = 75;
-        else
+        else {
             index = 26;
+            textDelayCurrent = 0;
+        }
 
         return index;
     }

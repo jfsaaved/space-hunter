@@ -14,6 +14,7 @@ import com.jfsaaved.libgdxgamejam15.options.ShipOptions;
 import com.jfsaaved.libgdxgamejam15.ui.BorderImage;
 import com.jfsaaved.libgdxgamejam15.ui.DialogueImages;
 import com.jfsaaved.libgdxgamejam15.ui.MenuImages;
+import com.jfsaaved.libgdxgamejam15.ui.NotificationImages;
 import com.jfsaaved.libgdxgamejam15.ui.PointerImage;
 import com.jfsaaved.libgdxgamejam15.ui.StatusImages;
 import com.jfsaaved.libgdxgamejam15.ui.TextImage;
@@ -28,27 +29,18 @@ public class ShipState extends State{
     // Space background
     private TextureRegion background;
 
-    // Objects
-    public Hero hero;
-    public Ship ship;
-
     // U.I.
-    public MenuImages menuImages;
-    public DialogueImages dialogueImages;
-    public StatusImages statusImages;
     public ShipOptions shipOptions;
 
     public ShipState(GSM gsm) {
         super(gsm);
 
-        this.ship = new Ship(Main.WIDTH/2 - 150, Main.HEIGHT/2, 300, 150);
-        this.hero = new Hero(Main.WIDTH/2, Main.HEIGHT/2, 36, 54, Main.resources.getAtlas("assets").findRegion("player"));
-        this.hero.setBoundaries(ship.getX(), ship.getX() + ship.getWidth());
+        hero.setBoundaries(ship.getX(), ship.getX() + ship.getWidth());
         this.background = new TextureRegion(Main.resources.getAtlas("assets").findRegion("space"));
 
         // Camera initializations
-        camX = this.hero.getX();
-        camY = this.hero.getY() + 50;
+        camX = hero.getX();
+        camY = hero.getY() + 50;
         this.updateCam(Main.WIDTH/2, Main.HEIGHT/2, camX, camY);
 
         // Menu image
@@ -60,6 +52,11 @@ public class ShipState extends State{
         // Full width is Hello World! This is a testing. Check out my mixtape at ayyyy.
         String[] dialogue = {"Navigate to different systems."};
         dialogueImages = new DialogueImages(cam, dialogue);
+
+        // Notification images
+        String[] notification = {"SUCCESS","+20% HUNGER","NO ENERGY","NO FUEL"};
+        notificationImages = new NotificationImages(cam, notification);
+        notificationImages.setHide(true);
 
         // Status images
         // int health, int hunger, int energy, int hunter, int explorer, int mechanic, int shipHealth, int shipFuel, int shipLevel
@@ -95,8 +92,8 @@ public class ShipState extends State{
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.Z)) {
             shipOptions.pushOption(menuImages.getOption());
-            shipOptions.setHoverDesc(menuImages.getOption());
             shipOptions.handleInput();
+            shipOptions.setHoverDesc(menuImages.getOption());
             statusImages.changeStats(hero.getHealth(),
                     hero.getHunger(),
                     hero.getEnergy(),
@@ -118,6 +115,7 @@ public class ShipState extends State{
         hero.update(dt);
         menuImages.update(dt);
         dialogueImages.update(dt);
+        notificationImages.update(dt);
         statusImages.update(dt);
     }
 
@@ -127,10 +125,12 @@ public class ShipState extends State{
         sb.begin();
         sb.draw(background, 0, 100);
         sb.draw(background, background.getRegionWidth(), 100);
+        ship.draw(sb);
         hero.draw(sb);
 
         menuImages.drawMenu(sb);
         dialogueImages.drawDialogue(sb);
+        notificationImages.drawNotification(sb);
         statusImages.drawStatus(sb);
 
         sb.end();
@@ -145,6 +145,7 @@ public class ShipState extends State{
 
         menuImages.drawMenuBox(sr);
         dialogueImages.drawDialogueBox(sr);
+        notificationImages.drawNotificationBox(sr);
         statusImages.drawStatusBox(sr);
 
         sr.end();

@@ -9,6 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jfsaaved.libgdxgamejam15.Main;
+import com.jfsaaved.libgdxgamejam15.objects.Hero;
+import com.jfsaaved.libgdxgamejam15.objects.Ship;
+import com.jfsaaved.libgdxgamejam15.options.ShipOptions;
+import com.jfsaaved.libgdxgamejam15.ui.DialogueImages;
+import com.jfsaaved.libgdxgamejam15.ui.MenuImages;
+import com.jfsaaved.libgdxgamejam15.ui.NotificationImages;
+import com.jfsaaved.libgdxgamejam15.ui.StatusImages;
 
 /**
  * Created by 343076 on 30/12/2015.
@@ -21,6 +28,16 @@ public abstract class State {
 
     protected float camX;
     protected float camY;
+
+    // Objects
+    public static Hero hero;
+    public static Ship ship;
+
+    // U.I.
+    public MenuImages menuImages;
+    public DialogueImages dialogueImages;
+    public NotificationImages notificationImages;
+    public StatusImages statusImages;
 
     protected State(GSM gsm){
         cam = new OrthographicCamera();

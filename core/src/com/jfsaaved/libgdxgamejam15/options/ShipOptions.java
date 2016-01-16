@@ -1,24 +1,22 @@
 package com.jfsaaved.libgdxgamejam15.options;
 
-import com.badlogic.gdx.graphics.Color;
 import com.jfsaaved.libgdxgamejam15.states.PlanetState;
 import com.jfsaaved.libgdxgamejam15.states.ShipState;
 import com.jfsaaved.libgdxgamejam15.ui.MenuImages;
+import com.jfsaaved.libgdxgamejam15.ui.NotificationImages;
 
 /**
  * Created by 343076 on 13/01/2016.
  */
 public class ShipOptions extends Options {
 
-    private ShipState state;
-
     public ShipOptions(ShipState state){
-        super();
-        this.state = state;
+        super(state);
     }
 
     @Override
     public void handleInput(){
+        super.handleInput();
         if(currentOption.elementAt(0) == 0)
             navigateOptions();
         else if(currentOption.elementAt(0) == 1)
@@ -27,6 +25,7 @@ public class ShipOptions extends Options {
             maintenanceOptions();
 
         if(currentOption.empty()){
+            state.statusImages.resetPreviewAll();
             state.statusImages.resetColorAll();
 
             String[] dialogue = {"Navigate through out the galaxy to different systems."};
@@ -84,26 +83,35 @@ public class ShipOptions extends Options {
                 state.dialogueImages.setDialogues(dialogue);
             }
         }
-        // health = 1, hunger = 2, energy = 3, hunter = 4, explorer = 5, mechanic = 6, shealth = 8, sfuel = 9, slevel = 10;
+
+        // Preview At index
+        // health = 0, hunger = 1, energy = 2, hunter = 3, explorer = 4, mechanic = 5,
+        // ship health = 6, ship fuel = 7, ship level = 8;
+        // food = 9, artifacts = 10, gold = 11
+        // setPercentagePreview: hero's status, value, colourAt Index, previewAt Index
         else if(currentOption.get(0) == 1) { // Hero options
-            if(i == 0) {
-                state.statusImages.resetColorAll();
-                state.statusImages.changeColourAt(Color.GREEN,2);
+            state.statusImages.resetPreviewAll();
+            state.statusImages.resetColorAll();
+            if(i == 0) { // EAT
+                setIncrementPreview(state.hero.getHunger(), 25, Stats.HUNGER.getValue());
+                setDecrementPreview(state.hero.getFood(), 1, Stats.FOOD.getValue());
             }
-            else if(i == 1) {
-                state.statusImages.resetColorAll();
-                state.statusImages.changeColourAt(Color.GREEN,1);
+            else if(i == 1) { // SLEEP
+                setIncrementPreview(state.hero.getEnergy(), 80, Stats.ENERGY.getValue());
+                setIncrementPreview(state.hero.getHealth(), 50, Stats.HEALTH.getValue());
+                setDecrementPreview(state.hero.getHunger(), 10, Stats.HUNGER.getValue());
             }
-            else if(i == 2) {
-                state.statusImages.resetColorAll();
-                state.statusImages.changeColourAt(Color.GREEN,3);
-            }
-            else {
-                state.statusImages.resetColorAll();
+            else if(i == 2) { // RELAX
+                setIncrementPreview(state.hero.getHealth(), 5, Stats.HEALTH.getValue());
+                setDecrementPreview(state.hero.getEnergy(), 10, Stats.ENERGY.getValue());
             }
         }
     }
 
+    // Indices for Type
+    // health = 0, hunger = 1, energy = 2, hunter = 3, explorer = 4, mechanic = 5,
+    // ship health = 6, ship fuel = 7, ship level = 8;
+    // food = 9, artifacts = 10, gold = 11
     private void navigateOptions(){
         String[] options = {"SYSTEM 1","SYSTEM 2","SYSTEM 3","SYSTEM 4","BACK"};
         state.menuImages = new MenuImages(state.getCam(), options);
@@ -126,20 +134,49 @@ public class ShipOptions extends Options {
         }
     }
 
+    // Indices for Type
+    // health = 0, hunger = 1, energy = 2, hunter = 3, explorer = 4, mechanic = 5,
+    // ship health = 6, ship fuel = 7, ship level = 8;
+    // food = 9, artifacts = 10, gold = 11
     private void suppliesOptions(){
         String[] options = {"EAT","SLEEP","RELAX","BACK"};
         state.menuImages = new MenuImages(state.getCam(), options);
+
         if(currentOption.size() > 1){
             if(currentOption.elementAt(1) == 0){
-                state.hero.setHunger(state.hero.getHunger() + 1);
+
+                if(state.hero.getFood() > 0) {
+
+                    changeStatsAt(Stats.HUNGER.getValue(), 25);
+                    changeStatsAt(Stats.FOOD.getValue(), -1);
+                    String[] notification = {"SUCCESS",
+                            "+"+(state.hero.getHunger()-originalHunger)+"% HUNGER",
+                            "-1 FOOD"};
+                    state.notificationImages = new NotificationImages(state.getCam(),notification);
+                }else{
+                    String[] notification = {"FAILED","NO FOOD"};
+                    state.notificationImages = new NotificationImages(state.getCam(),notification);
+                }
+
                 currentOption.clear();
             }
             else if(currentOption.elementAt(1) == 1){
-                state.hero.setHealth(state.hero.getHealth() + 1);
+
+                changeStatsAt(Stats.ENERGY.getValue(), 80);
+                changeStatsAt(Stats.HEALTH.getValue(), 50);
+                changeStatsAt(Stats.HUNGER.getValue(), -10);
+                String[] notification = {"SUCCESS",
+                        "+"+(state.hero.getEnergy()-originalEnergy)+"% ENERGY",
+                        "+"+(state.hero.getHealth()-originalHealth)+"% HEALTH",
+                        (state.hero.getHunger()-originalHunger)+"% HUNGER"};
+                state.notificationImages = new NotificationImages(state.getCam(),notification);
+
                 currentOption.clear();
             }
             else if(currentOption.elementAt(1) == 2){
-                state.hero.setEnergy(state.hero.getEnergy() + 1);
+                if(state.hero.getEnergy() > 0)
+                    changeStatsAt(0, 5);
+                changeStatsAt(2, -10);
                 currentOption.clear();
             }
             else if(currentOption.elementAt(1) == 3){
@@ -148,6 +185,10 @@ public class ShipOptions extends Options {
         }
     }
 
+    // Indices for Type
+    // health = 0, hunger = 1, energy = 2, hunter = 3, explorer = 4, mechanic = 5,
+    // ship health = 6, ship fuel = 7, ship level = 8;
+    // food = 9, artifacts = 10, gold = 11
     private void maintenanceOptions(){
         String[] options = {"CLEAN","REPAIR","BACK"};
         state.menuImages = new MenuImages(state.getCam(), options);
@@ -165,5 +206,6 @@ public class ShipOptions extends Options {
             }
         }
     }
+
 
 }

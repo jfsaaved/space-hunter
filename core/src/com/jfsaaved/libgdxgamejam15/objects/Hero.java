@@ -34,9 +34,9 @@ public class Hero extends AnimatedObject {
         this.boundaryX1 = 0;
         this.boundaryX2 = Main.WIDTH;
 
-        hunger = 100;
-        energy = 100;
-        health = 100;
+        hunger = 74;
+        energy = 99;
+        health = 50;
 
         hunter = 1;
         explorer = 1;

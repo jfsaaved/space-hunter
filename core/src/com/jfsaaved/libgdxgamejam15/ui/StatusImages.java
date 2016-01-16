@@ -33,6 +33,9 @@ public class StatusImages {
     private int artifacts;
     private int gold;
 
+    // Preview values
+    private ArrayList<Integer> previews;
+
     public StatusImages(OrthographicCamera cam, int health, int hunger, int energy, int hunter, int explorer, int mechanic, int shipHealth, int shipFuel, int shipLevel, int food, int artifacts, int gold) {
         statsBorder = new BorderImage((cam.position.x - (cam.viewportWidth/2)) + 5, (cam.position.y + cam.viewportHeight/2) - 265, 31, 52, 0.111f);
 
@@ -49,18 +52,22 @@ public class StatusImages {
         this.artifacts = artifacts;
         this.gold = gold;
 
+        previews = new ArrayList<Integer>();
+        for(int i = 0; i < 12; i++)
+            previews.add(0);
+
         // Creating the text images for the status names
         String[] statList = {
-                "HERO","HEALTH    "+percentageToString(this.health)+"%",
+                "     HERO     ","HEALTH    "+percentageToString(this.health)+"%",
                 "HUNGER    "+percentageToString(this.hunger)+"%",
                 "ENERGY    "+percentageToString(this.energy)+"%",
                 "HUNTER      "+levelToString(this.hunter),
                 "EXPLORER    "+levelToString(this.explorer),
                 "MECHANIC    "+levelToString(this.mechanic),
-                "SHIP","HEALTH    "+percentageToString(this.shipHealth)+"%",
+                "     SHIP     ","HEALTH    "+percentageToString(this.shipHealth)+"%",
                 "FUEL      "+percentageToString(this.shipFuel)+"%",
                 "LEVEL       "+levelToString(this.shipLevel),
-                "SUPPLIES","FOOD        "+levelToString(this.food),
+                "   SUPPLIES   ","FOOD        "+levelToString(this.food),
                 "ARTIFACTS   "+levelToString(this.artifacts),
                 "GOLD       $"+levelToString(this.gold)};
 
@@ -106,18 +113,18 @@ public class StatusImages {
 
     public void update(float dt) {
         String[] statList = {
-                "HERO","HEALTH    "+percentageToString(this.health)+"%",
-                "HUNGER    "+percentageToString(this.hunger)+"%",
-                "ENERGY    "+percentageToString(this.energy)+"%",
-                "HUNTER      "+levelToString(this.hunter),
-                "EXPLORER    "+levelToString(this.explorer),
-                "MECHANIC    "+levelToString(this.mechanic),
-                "SHIP","HEALTH    "+percentageToString(this.shipHealth)+"%",
-                "FUEL      "+percentageToString(this.shipFuel)+"%",
-                "LEVEL       "+levelToString(this.shipLevel),
-                "SUPPLIES","FOOD        "+levelToString(this.food),
-                "ARTIFACTS   "+levelToString(this.artifacts),
-                "GOLD       $"+levelToString(this.gold)};
+                "     HERO     ","HEALTH    "+percentageToString(this.health + previews.get(0))+"%",
+                "HUNGER    "+percentageToString(this.hunger + previews.get(1))+"%",
+                "ENERGY    "+percentageToString(this.energy + previews.get(2))+"%",
+                "HUNTER      "+levelToString(this.hunter + previews.get(3)),
+                "EXPLORER    "+levelToString(this.explorer + previews.get(4)),
+                "MECHANIC    "+levelToString(this.mechanic + previews.get(5)),
+                "     SHIP     ","HEALTH    "+percentageToString(this.shipHealth + previews.get(6))+"%",
+                "FUEL      "+percentageToString(this.shipFuel + previews.get(7))+"%",
+                "LEVEL       "+levelToString(this.shipLevel + previews.get(8)),
+                "   SUPPLIES   ","FOOD        "+levelToString(this.food + previews.get(9)),
+                "ARTIFACTS   "+levelToString(this.artifacts + previews.get(10)),
+                "GOLD       $"+levelToString(this.gold + previews.get(11))};
 
         // health = 1, hunger = 2, energy = 3, hunter = 4, explorer = 5, mechanic = 6, shealth = 8, sfueld = 9, slevel = 10;
         int i = 0;
@@ -128,13 +135,22 @@ public class StatusImages {
         }
     }
 
-    public void changeColourAt(Color color, int i) {
-        stats.get(i).setTextColor(color);
+    public void changeColourAt(int index, Color color) {
+        stats.get(index).setTextColor(color);
     }
 
     public void resetColorAll(){
         for(TextImage item : stats)
             item.setTextColor(Color.WHITE);
+    }
+
+    public void setPreviewAt(int index, int val){
+        previews.set(index, val);
+    }
+
+    public void resetPreviewAll(){
+        for(int i = 0 ; i < 12 ; i++)
+            previews.set(i,0);
     }
 
     public void drawStatus(SpriteBatch sb){
