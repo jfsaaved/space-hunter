@@ -165,7 +165,6 @@ public class Planet2State extends State {
     protected void render(SpriteBatch sb) {
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
-
         sb.draw(space, spaceX, hero.getY());
         sb.draw(space, spaceX - space.getRegionWidth(), hero.getY());
         sb.draw(space, spaceX + space.getRegionWidth(), hero.getY());
@@ -178,13 +177,14 @@ public class Planet2State extends State {
         sb.draw(ground, 2 * ground.getWidth(), hero.getY() - 30);
         sb.draw(ground, 3 * ground.getWidth(), hero.getY() - 30);
 
+        hero.draw(sb);
+
         menuImages.drawMenu(sb);
         dialogueImages.drawDialogue(sb);
         notificationImages.drawNotification(sb);
         statusImages.drawStatus(sb);
         dayImage.drawDay(sb);
 
-        hero.draw(sb);
         sb.end();
     }
 

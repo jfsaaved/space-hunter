@@ -66,6 +66,7 @@ public class GameOverState extends State {
     @Override
     protected void handleInput(float dt) {
         if(Gdx.input.isKeyJustPressed(Input.Keys.Z)){
+            Main.sound.getAtlas("fail").play();
             this.gsm.set(new MenuState(gsm));
         }
     }

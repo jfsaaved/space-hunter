@@ -194,6 +194,8 @@ public class ShipState extends State{
                 ship.setHealth(ship.getHealth() - 20);
                 String[] notification = {"ARRIVED AT","SYSTEM "+(currentSystem+1),"-20% FUEL","-20% SHIP HP"};
                 notificationImages = new NotificationImages(cam,notification);
+                Main.sound.getAtlas("fail").stop();
+                Main.sound.getAtlas("fail").play();
                 statusImages.setStatsShipFuel(ship.getFuel());
                 statusImages.setStatsShipHealth(ship.getHealth());
             }
