@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class GameOverState extends State {
 
     private TextureRegion background;
+    private float backgroundX;
     private TextImage title;
 
     public GameOverState(GSM gsm){
@@ -74,17 +75,25 @@ public class GameOverState extends State {
     @Override
     protected void update(float dt) {
         handleInput(dt);
+        checkBackground(dt);
         title.update(dt);
         dialogueImages.update(dt);
+    }
+
+    public void checkBackground(float dt){
+        if(backgroundX < background.getRegionWidth())
+            backgroundX += 10f * dt;
+        else
+            backgroundX = 0;
     }
 
     @Override
     protected void render(SpriteBatch sb) {
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
-        sb.draw(background, 0, 0);
-        sb.draw(background, background.getRegionWidth(), 0);
-        sb.draw(background, 0 - background.getRegionWidth(), 0);
+        sb.draw(background, backgroundX, - 50);
+        sb.draw(background, backgroundX - background.getRegionWidth(), - 50);
+        sb.draw(background, backgroundX + background.getRegionWidth(), - 50);
         title.drawText(sb);
         dialogueImages.drawDialogue(sb);
         sb.end();

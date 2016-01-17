@@ -57,6 +57,7 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void resize(int width, int height){
-        gsm.resize(width, height);
+
+        //gsm.resize(width, height);
     }
 }

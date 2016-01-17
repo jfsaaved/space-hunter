@@ -44,10 +44,11 @@ public class ShipState extends State{
         music.loadAtlas("SHIP.mp3","ship");
         music.getAtlas("ship").setLooping(true);
         music.getAtlas("ship").play();
-        hero.setPosition(Main.WIDTH/2, Main.HEIGHT/2 + 3);
+
+        hero.setPosition(Main.WIDTH/2, Main.HEIGHT/2);
 
         // Objects stuff
-        hero.setBoundaries(ship.getX(), ship.getX() + ship.getWidth());
+        hero.setBoundaries(ship.getX() + 5, ship.getX() + ship.getWidth() - 5);
 
         // Background stuff
         this.background = new TextureRegion(Main.resources.getAtlas("assets").findRegion("space"));

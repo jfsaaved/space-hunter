@@ -21,9 +21,11 @@ public class MenuState extends State{
 
     private TextureRegion background;
     private float backgroundX;
+
     private TextImage title;
     private TextImage start;
     private TextImage load;
+    private TextImage exit;
 
     private PointerImage pointer;
 
@@ -50,8 +52,10 @@ public class MenuState extends State{
         start.shiftHalfLeft();
         load = new TextImage("LOAD GAME", 300, 250, 3, 0);
         load.shiftHalfLeft();
+        exit = new TextImage("EXIT", 300, 200, 3, 0);
+        exit.shiftHalfLeft();
 
-        pointer = new PointerImage(load.getTextX(), start.getTextY(), (int) start.getTextHeight(), 3, 1);
+        pointer = new PointerImage(load.getTextX(), start.getTextY(), (int) start.getTextHeight(), 3, 2);
         pointer.setX(pointer.getX() - pointer.getWidth());
 
         preferences = new MainPreferences();
@@ -75,6 +79,9 @@ public class MenuState extends State{
                 preferences.load(hero, ship, this);
                 this.gsm.set(new ShipState(gsm));
             }
+            else if(pointer.getOption() == 2){
+                System.exit(0);
+            }
         }
     }
 
@@ -85,6 +92,7 @@ public class MenuState extends State{
         title.update(dt);
         start.update(dt);
         load.update(dt);
+        exit.update(dt);
     }
 
     public void checkBackground(float dt){
@@ -105,6 +113,7 @@ public class MenuState extends State{
         title.drawText(sb);
         start.drawText(sb);
         load.drawText(sb);
+        exit.drawText(sb);
         pointer.drawPointer(sb);
         sb.end();
     }
@@ -116,6 +125,7 @@ public class MenuState extends State{
         title.drawTextBox(sr);
         start.drawTextBox(sr);
         load.drawTextBox(sr);
+        exit.drawTextBox(sr);
         pointer.drawPointerBox(sr);
         sr.end();
     }
